@@ -3,327 +3,587 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic India Trip Planner</title>
+    <title>India Trip Planner</title>
     <style>
-        /* --- General Styles --- */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap');
 
         :root {
-            --primary-color: #007bff;
-            --secondary-color: #f8f9fa;
-            --text-color: #333;
-            --card-bg: #ffffff;
-            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --bg: #0d0d14;
+            --surface: #16161f;
+            --surface2: #1e1e2a;
+            --border: rgba(255,255,255,0.07);
+            --accent: #e8a44a;
+            --accent-dim: rgba(232,164,74,0.12);
+            --accent-glow: rgba(232,164,74,0.25);
+            --text: #e2e2ec;
+            --muted: #7c7c99;
+            --gold: #ffd166;
+            --silver: #b0b8c8;
+            --bronze: #cd8a5a;
+            --temp-color: #ff7eb3;
+            --temp-dim: rgba(255,126,179,0.12);
+            --green: #4ecdc4;
         }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--secondary-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: auto;
-        }
-
-        /* --- Header --- */
+        /* ── Header ── */
         header {
+            position: relative;
+            padding: 56px 24px 48px;
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #eee;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
         }
 
-        h1 {
-            color: var(--primary-color);
-            margin-bottom: 5px;
+        header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 80% at 50% 0%, rgba(232,164,74,0.10) 0%, transparent 70%),
+                linear-gradient(180deg, #1a1008 0%, transparent 100%);
+            pointer-events: none;
         }
+
+        .header-eyebrow {
+            font-size: 0.7em;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 14px;
+            position: relative;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2em, 5vw, 3.6em);
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1.1;
+            position: relative;
+        }
+
+        header h1 span { color: var(--accent); }
 
         header p {
-            font-size: 1.1em;
-            color: #666;
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 1em;
+            position: relative;
         }
 
-        /* --- Controls Section --- */
-        .controls {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            margin-bottom: 40px;
+        /* ── Layout ── */
+        .page {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 36px 20px 60px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: 320px 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        /* ── Controls ── */
+        .sidebar {
+            position: sticky;
+            top: 24px;
+        }
+
+        .section-label {
+            font-size: 0.65em;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 12px;
+            padding-left: 2px;
+        }
+
+        .controls-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 22px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .slider-group {
             display: flex;
             flex-direction: column;
+            gap: 9px;
         }
 
-        .slider-group label {
-            font-weight: 600;
-            margin-bottom: 10px;
+        .slider-row {
             display: flex;
+            align-items: center;
             justify-content: space-between;
         }
 
-        .slider-group span {
-            font-weight: 400;
-            color: var(--primary-color);
-            background: #e7f3ff;
-            padding: 2px 8px;
-            border-radius: 5px;
-            font-size: 0.9em;
+        .slider-name {
+            font-size: 0.875em;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .slider-val {
+            font-size: 0.78em;
+            font-weight: 600;
+            color: var(--accent);
+            background: var(--accent-dim);
+            padding: 2px 10px;
+            border-radius: 20px;
+            min-width: 28px;
+            text-align: center;
+            transition: background 0.2s;
         }
 
         input[type="range"] {
             -webkit-appearance: none;
             width: 100%;
-            height: 8px;
-            background: #ddd;
-            border-radius: 5px;
+            height: 4px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 4px;
             outline: none;
             cursor: pointer;
         }
-        
+
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: var(--primary-color);
+            width: 17px;
+            height: 17px;
+            background: var(--accent);
             border-radius: 50%;
-            transition: background 0.2s;
+            box-shadow: 0 0 0 3px var(--accent-glow);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        input[type="range"]:hover::-webkit-slider-thumb {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 5px var(--accent-glow);
         }
 
         input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: var(--primary-color);
+            width: 17px;
+            height: 17px;
+            background: var(--accent);
             border-radius: 50%;
             border: none;
-            transition: background 0.2s;
         }
 
-        /* --- Results Section --- */
+        /* Temperature sub-section */
+        .temp-sub {
+            margin-top: 4px;
+            padding: 14px 15px;
+            background: rgba(255,126,179,0.05);
+            border: 1px solid rgba(255,126,179,0.14);
+            border-radius: 11px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .temp-sub .slider-name {
+            font-size: 0.82em;
+            color: var(--muted);
+        }
+
+        .temp-sub .slider-val {
+            color: var(--temp-color);
+            background: var(--temp-dim);
+        }
+
+        .temp-sub input[type="range"] {
+            background: linear-gradient(to right, #4fc3f7 0%, #81e6d9 35%, #fbbf24 65%, #ff7eb3 100%);
+            height: 4px;
+        }
+
+        .temp-sub input[type="range"]::-webkit-slider-thumb {
+            background: var(--temp-color);
+            box-shadow: 0 0 0 3px rgba(255,126,179,0.25);
+        }
+
+        .temp-sub input[type="range"]:hover::-webkit-slider-thumb {
+            box-shadow: 0 0 0 5px rgba(255,126,179,0.25);
+        }
+
+        .temp-sub input[type="range"]::-moz-range-thumb {
+            background: var(--temp-color);
+        }
+
+        .temp-hint {
+            font-size: 0.72em;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── Results ── */
+        .results-area {}
+
         #results {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .dest-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px 18px;
             display: grid;
-            gap: 20px;
-        }
-
-        .destination-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            padding: 20px;
-            display: flex;
+            grid-template-columns: 44px 1fr auto;
             align-items: center;
-            justify-content: space-between;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            gap: 14px;
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+            cursor: default;
         }
 
-        .destination-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        .dest-card:hover {
+            transform: translateX(5px);
+            border-color: rgba(232,164,74,0.22);
+            box-shadow: 0 6px 28px rgba(0,0,0,0.35), -3px 0 0 var(--accent);
         }
 
-        .destination-info {
-            flex-grow: 1;
+        .dest-card.r1 {
+            border-color: rgba(255,209,102,0.28);
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(255,209,102,0.04) 100%);
         }
 
-        .destination-info h3 {
-            margin: 0 0 10px 0;
-            color: #222;
+        .dest-card.r2 {
+            border-color: rgba(176,184,200,0.2);
         }
 
-        .score-breakdown {
-            font-size: 0.85em;
-            color: #777;
+        .dest-card.r3 {
+            border-color: rgba(205,138,90,0.2);
+        }
+
+        /* Rank badge */
+        .rank {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .score-badge {
-            background: #f0f0f0;
-            padding: 3px 8px;
-            border-radius: 5px;
-        }
-        
-        .score-badge strong {
-            color: #555;
-        }
-
-        .final-score {
-            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            color: white;
-            font-size: 1.8em;
-            font-weight: 600;
-            margin-left: 20px;
+            font-weight: 700;
+            font-size: 1em;
             flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.4);
+            background: rgba(255,255,255,0.04);
+            color: var(--muted);
+            line-height: 1;
         }
 
+        .rank small {
+            font-size: 0.5em;
+            font-weight: 400;
+            opacity: 0.7;
+            letter-spacing: 0.5px;
+        }
+
+        .rank.gold   { background: rgba(255,209,102,0.1); color: var(--gold); }
+        .rank.silver { background: rgba(176,184,200,0.1); color: var(--silver); }
+        .rank.bronze { background: rgba(205,138,90,0.1);  color: var(--bronze); }
+
+        /* Card body */
+        .card-body {}
+
+        .dest-name {
+            font-weight: 600;
+            font-size: 0.97em;
+            color: var(--text);
+            margin-bottom: 7px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .tag {
+            font-size: 0.7em;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .tag.active {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        .tag.temp-tag {
+            background: var(--temp-dim);
+            color: var(--temp-color);
+        }
+
+        .tag.temp-match {
+            background: rgba(78,205,196,0.1);
+            color: var(--green);
+        }
+
+        /* Final score */
+        .score-wrap {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .score-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.1em;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .score-lbl {
+            font-size: 0.6em;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        /* Score bar mini-vis */
+        .mini-bar-row {
+            display: flex;
+            gap: 3px;
+            margin-top: 7px;
+        }
+
+        .mini-bar-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .mini-bar-bg {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .mini-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: var(--accent);
+            transition: width 0.35s ease;
+        }
+
+        .mini-bar-fill.temp-bar {
+            background: var(--temp-color);
+        }
+
+        .mini-bar-label {
+            font-size: 0.6em;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 780px) {
+            .page {
+                grid-template-columns: 1fr;
+            }
+            .sidebar { position: static; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>Dynamic India Trip Planner</h1>
-            <p>Adjust the sliders below to rank destinations based on what's most important to you.</p>
-        </header>
+<header>
+    <div class="header-eyebrow">Travel Intelligence</div>
+    <h1>India <span>Trip Planner</span></h1>
+    <p>Weight what matters to you — rankings update instantly.</p>
+</header>
 
-        <section class="controls" id="controls">
-            <!-- Sliders will be dynamically inserted here by JavaScript -->
-        </section>
+<div class="page">
 
-        <section id="results">
-            <!-- Destination cards will be dynamically inserted here -->
-        </section>
-    </div>
+    <aside class="sidebar">
+        <div class="section-label">Your Priorities</div>
+        <div class="controls-card" id="controls"></div>
+    </aside>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
+    <main class="results-area">
+        <div class="section-label" id="results-label">Ranked Destinations</div>
+        <div id="results"></div>
+    </main>
 
-            // --- 1. DATA ---
-            const destinations = [
-                { 
-                    name: 'Munnar, Kerala', 
-                    scores: { cleanliness: 9, sites: 9, safety: 10, price: 8, connectivity: 6, food: 8, climate: 10 } 
-                },
-                { 
-                    name: 'Gangtok, Sikkim', 
-                    scores: { cleanliness: 10, sites: 9, safety: 10, price: 8, connectivity: 4, food: 7, climate: 10 } 
-                },
-                { 
-                    name: 'South Goa', 
-                    scores: { cleanliness: 8, sites: 8, safety: 9, price: 7, connectivity: 9, food: 10, climate: 7 } 
-                },
-                { 
-                    name: 'Fort Kochi, Kerala', 
-                    scores: { cleanliness: 8, sites: 8, safety: 9, price: 8, connectivity: 9, food: 9, climate: 7 } 
-                },
-                { 
-                    name: 'Udaipur, Rajasthan', 
-                    scores: { cleanliness: 7, sites: 10, safety: 8, price: 7, connectivity: 8, food: 10, climate: 6 } 
-                },
-                { 
-                    name: 'Alleppey, Kerala', 
-                    scores: { cleanliness: 8, sites: 9, safety: 9, price: 6, connectivity: 7, food: 9, climate: 7 } 
-                },
-                { 
-                    name: 'Jaipur, Rajasthan', 
-                    scores: { cleanliness: 6, sites: 9, safety: 7, price: 8, connectivity: 9, food: 9, climate: 6 } 
-                },
-                { 
-                    name: 'New Delhi', 
-                    scores: { cleanliness: 5, sites: 9, safety: 6, price: 8, connectivity: 10, food: 10, climate: 5 } 
-                },
-                { 
-                    name: 'Agra, Uttar Pradesh', 
-                    scores: { cleanliness: 4, sites: 10, safety: 6, price: 8, connectivity: 10, food: 7, climate: 5 } 
-                }
-            ];
+</div>
 
-            const parameters = {
-                cleanliness: 'Cleanliness & Hygiene',
-                sites: 'Tourist Sites & Beauty',
-                safety: 'Safety for Tourists',
-                price: 'Affordability',
-                connectivity: 'Travel & Connectivity',
-                food: 'Food & Stay Quality',
-                climate: 'Pleasant Climate'
-            };
+<script>
+document.addEventListener('DOMContentLoaded', () => {
 
-            // --- 2. SETUP & INITIALIZATION ---
-            const controlsContainer = document.getElementById('controls');
-            const resultsContainer = document.getElementById('results');
+    const destinations = [
+        { name: 'Munnar, Kerala',       avgTemp: 18, scores: { cleanliness: 9,  sites: 9,  safety: 10, price: 8, connectivity: 6,  food: 8,  climate: 9 } },
+        { name: 'Gangtok, Sikkim',      avgTemp: 15, scores: { cleanliness: 10, sites: 9,  safety: 10, price: 8, connectivity: 4,  food: 7,  climate: 9 } },
+        { name: 'South Goa',            avgTemp: 29, scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 7, connectivity: 9,  food: 10, climate: 7 } },
+        { name: 'Fort Kochi, Kerala',   avgTemp: 28, scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 8, connectivity: 9,  food: 9,  climate: 7 } },
+        { name: 'Udaipur, Rajasthan',   avgTemp: 27, scores: { cleanliness: 7,  sites: 10, safety: 8,  price: 7, connectivity: 8,  food: 10, climate: 6 } },
+        { name: 'Alleppey, Kerala',     avgTemp: 29, scores: { cleanliness: 8,  sites: 9,  safety: 9,  price: 6, connectivity: 7,  food: 9,  climate: 7 } },
+        { name: 'Jaipur, Rajasthan',    avgTemp: 26, scores: { cleanliness: 6,  sites: 9,  safety: 7,  price: 8, connectivity: 9,  food: 9,  climate: 6 } },
+        { name: 'New Delhi',            avgTemp: 25, scores: { cleanliness: 5,  sites: 9,  safety: 6,  price: 8, connectivity: 10, food: 10, climate: 5 } },
+        { name: 'Agra, Uttar Pradesh',  avgTemp: 25, scores: { cleanliness: 4,  sites: 10, safety: 6,  price: 8, connectivity: 10, food: 7,  climate: 5 } }
+    ];
 
-            for (const key in parameters) {
-                const sliderHTML = `
-                    <div class="slider-group">
-                        <label for="${key}-slider">${parameters[key]} <span id="${key}-value">5</span></label>
-                        <input type="range" id="${key}-slider" data-parameter="${key}" min="0" max="10" value="5">
-                    </div>
-                `;
-                controlsContainer.innerHTML += sliderHTML;
-            }
+    const parameters = {
+        cleanliness:  'Cleanliness',
+        sites:        'Tourist Sites',
+        safety:       'Safety',
+        price:        'Affordability',
+        connectivity: 'Connectivity',
+        food:         'Food & Stay',
+        climate:      'Climate'
+    };
 
-            // --- 3. CORE LOGIC ---
+    const controls = document.getElementById('controls');
+    const results  = document.getElementById('results');
 
-            function calculateAndRender() {
-                const weights = {};
-                document.querySelectorAll('.controls input[type="range"]').forEach(slider => {
-                    const param = slider.dataset.parameter;
-                    weights[param] = parseInt(slider.value, 10);
-                    document.getElementById(`${param}-value`).textContent = slider.value;
-                });
+    // Build sliders
+    for (const key in parameters) {
+        const group = document.createElement('div');
+        group.className = 'slider-group';
+        group.innerHTML = `
+            <div class="slider-row">
+                <span class="slider-name">${parameters[key]}</span>
+                <span class="slider-val" id="${key}-val">5</span>
+            </div>
+            <input type="range" id="${key}-slider" data-param="${key}" min="0" max="10" value="5">
+        `;
+        controls.appendChild(group);
 
-                let maxPossibleScore = 0;
-                for (const param in weights) {
-                    maxPossibleScore += 10 * weights[param];
-                }
-                if (maxPossibleScore === 0) maxPossibleScore = 1;
+        // Temperature subsection sits right under the Climate slider
+        if (key === 'climate') {
+            const tempSub = document.createElement('div');
+            tempSub.className = 'temp-sub';
+            tempSub.innerHTML = `
+                <div class="slider-row">
+                    <span class="slider-name">&#127777;&#65039; Ideal Temperature</span>
+                    <span class="slider-val" id="pref-temp-val">22°C</span>
+                </div>
+                <input type="range" id="pref-temp" min="15" max="40" value="22" step="1">
+                <div class="temp-hint">Destinations whose average temp is closer to your ideal get a higher climate score.</div>
+            `;
+            group.appendChild(tempSub);
 
-                const rankedDestinations = destinations.map(dest => {
-                    let totalScore = 0;
-                    for (const param in dest.scores) {
-                        totalScore += dest.scores[param] * (weights[param] || 0);
-                    }
-                    const finalPercentage = Math.round((totalScore / maxPossibleScore) * 100);
-                    return { ...dest, finalScore: finalPercentage };
-                });
+            const div = document.createElement('div');
+            div.className = 'divider';
+            controls.appendChild(div);
+        }
+    }
 
-                rankedDestinations.sort((a, b) => b.finalScore - a.finalScore);
+    function tempScore(destAvg, preferred) {
+        const diff = Math.abs(destAvg - preferred);
+        return Math.max(0, 10 - diff * 0.8); // ~12.5°C gap = score 0
+    }
 
-                renderResults(rankedDestinations);
-            }
-
-            function renderResults(rankedDestinations) {
-                resultsContainer.innerHTML = '';
-
-                rankedDestinations.forEach(dest => {
-                    const card = document.createElement('div');
-                    card.className = 'destination-card';
-
-                    const breakdownHTML = Object.keys(dest.scores).map(key => 
-                        `<div class="score-badge"><strong>${parameters[key].split(' ')[0]}:</strong> ${dest.scores[key]}/10</div>`
-                    ).join('');
-
-                    card.innerHTML = `
-                        <div class="destination-info">
-                            <h3>${dest.name}</h3>
-                            <div class="score-breakdown">${breakdownHTML}</div>
-                        </div>
-                        <div class="final-score">${dest.finalScore}</div>
-                    `;
-                    resultsContainer.appendChild(card);
-                });
-            }
-
-            // --- 4. EVENT LISTENERS ---
-            controlsContainer.addEventListener('input', (event) => {
-                if (event.target.type === 'range') {
-                    calculateAndRender();
-                }
-            });
-
-            // --- 5. INITIAL RENDER ---
-            calculateAndRender();
-
+    function run() {
+        // Collect weights
+        const W = {};
+        document.querySelectorAll('#controls input[data-param]').forEach(s => {
+            W[s.dataset.param] = +s.value;
+            document.getElementById(`${s.dataset.param}-val`).textContent = s.value;
         });
-    </script>
+
+        const preferred = +document.getElementById('pref-temp').value;
+        document.getElementById('pref-temp-val').textContent = preferred + '°C';
+
+        // Max possible score
+        let maxScore = Object.values(W).reduce((a, w) => a + 10 * w, 0);
+        if (maxScore === 0) maxScore = 1;
+
+        // Score & rank
+        const ranked = destinations.map(d => {
+            let total = 0;
+            for (const k in d.scores) {
+                let s = d.scores[k];
+                if (k === 'climate') s = (s + tempScore(d.avgTemp, preferred)) / 2;
+                total += s * (W[k] || 0);
+            }
+            return { ...d, finalScore: Math.round((total / maxScore) * 100), preferred };
+        }).sort((a, b) => b.finalScore - a.finalScore);
+
+        render(ranked);
+    }
+
+    function render(ranked) {
+        results.innerHTML = '';
+
+        ranked.forEach((d, i) => {
+            const card = document.createElement('div');
+            const rankClass = i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : '';
+            const badgeClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+            const ordinal = ['1st','2nd','3rd'][i] ?? `${i+1}th`;
+
+            const diff = Math.abs(d.avgTemp - d.preferred);
+            const matchLabel = diff <= 2 ? 'Perfect match' : diff <= 5 ? 'Near ideal' : diff <= 9 ? 'Acceptable' : 'Far from ideal';
+            const matchClass = diff <= 5 ? 'temp-match' : 'temp-tag';
+
+            // Mini-bar for each parameter
+            const bars = Object.keys(d.scores).map(k => {
+                const isClimate = k === 'climate';
+                const dispScore = isClimate
+                    ? Math.round((d.scores[k] + tempScore(d.avgTemp, d.preferred)) / 2 * 10) / 10
+                    : d.scores[k];
+                const pct = (dispScore / 10) * 100;
+                const label = parameters[k].split(' ')[0];
+                return `
+                    <div class="mini-bar-wrap" title="${parameters[k]}: ${dispScore}/10">
+                        <div class="mini-bar-bg">
+                            <div class="mini-bar-fill${isClimate ? ' temp-bar' : ''}" style="width:${pct}%"></div>
+                        </div>
+                        <div class="mini-bar-label">${label}</div>
+                    </div>`;
+            }).join('');
+
+            card.className = `dest-card ${rankClass}`;
+            card.innerHTML = `
+                <div class="rank ${badgeClass}">
+                    ${i < 3 ? ordinal.replace(/(\d+)(.+)/, '<span>$1</span><small>$2</small>') : `<span style="font-size:0.85em">${ordinal}</span>`}
+                </div>
+                <div class="card-body">
+                    <div class="dest-name">${d.name}</div>
+                    <div class="tags">
+                        <span class="tag temp-tag">&#127777; ${d.avgTemp}°C avg</span>
+                        <span class="tag ${matchClass}">${matchLabel}</span>
+                    </div>
+                    <div class="mini-bar-row">${bars}</div>
+                </div>
+                <div class="score-wrap">
+                    <div class="score-num">${d.finalScore}</div>
+                    <div class="score-lbl">score</div>
+                </div>
+            `;
+            results.appendChild(card);
+        });
+    }
+
+    controls.addEventListener('input', run);
+    run();
+});
+</script>
 </body>
 </html>
