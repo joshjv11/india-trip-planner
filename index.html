@@ -5,31 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>India Trip Planner</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@700;800;900&display=swap');
 
         :root {
-            --bg: #0d0d14;
-            --surface: #16161f;
-            --surface2: #1e1e2c;
-            --border: rgba(255,255,255,0.07);
+            --bg: #080810;
+            --surface: #11111c;
+            --surface2: #181826;
+            --surface3: #1e1e30;
+            --border: rgba(255,255,255,0.06);
+            --border2: rgba(255,255,255,0.10);
             --accent: #e8a44a;
-            --accent-dim: rgba(232,164,74,0.12);
-            --accent-glow: rgba(232,164,74,0.25);
-            --text: #e2e2ec;
-            --muted: #7c7c99;
+            --accent-dim: rgba(232,164,74,0.13);
+            --accent-glow: rgba(232,164,74,0.22);
+            --text: #e4e4f0;
+            --text2: #a8a8c0;
+            --muted: #6a6a88;
             --gold: #ffd166;
-            --silver: #b0b8c8;
-            --bronze: #cd8a5a;
+            --silver: #b8c4d8;
+            --bronze: #d4925e;
             --temp-color: #ff7eb3;
             --temp-dim: rgba(255,126,179,0.12);
             --green: #4ecdc4;
-            --heritage-color: #c084fc;
-            --heritage-dim: rgba(192,132,252,0.12);
-            --sheet-radius: 24px;
+            --heritage-color: #b07cf8;
+            --heritage-dim: rgba(176,124,248,0.12);
+            /* Budget category colors */
+            --cat-acc:   #60a5fa;
+            --cat-food:  #34d399;
+            --cat-trans: #fbbf24;
+            --cat-acts:  #a78bfa;
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
         html { scroll-behavior: smooth; }
 
         body {
@@ -40,60 +46,63 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ─── Header ─── */
+        /* ── Header ── */
         header {
             position: relative;
-            padding: 52px 24px 44px;
+            padding: 60px 24px 52px;
             text-align: center;
             overflow: hidden;
             border-bottom: 1px solid var(--border);
         }
 
-        header::before {
-            content: '';
+        .header-glow {
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse 70% 90% at 50% 0%, rgba(232,164,74,0.10) 0%, transparent 70%),
-                        linear-gradient(180deg, #1a1008 0%, transparent 100%);
+            background:
+                radial-gradient(ellipse 80% 100% at 50% -10%, rgba(232,164,74,0.12) 0%, transparent 65%),
+                radial-gradient(ellipse 40% 50% at 20% 80%, rgba(176,124,248,0.05) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 50% at 80% 80%, rgba(96,165,250,0.05) 0%, transparent 60%),
+                linear-gradient(180deg, #100c00 0%, transparent 100%);
             pointer-events: none;
         }
 
         .eyebrow {
-            font-size: 0.68em;
+            font-size: 0.66em;
             font-weight: 600;
-            letter-spacing: 3px;
+            letter-spacing: 3.5px;
             text-transform: uppercase;
             color: var(--accent);
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             position: relative;
         }
 
         header h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.9em, 5vw, 3.4em);
-            font-weight: 800;
-            color: var(--text);
-            line-height: 1.1;
+            font-size: clamp(2em, 6vw, 3.8em);
+            font-weight: 900;
+            line-height: 1.05;
             position: relative;
+            background: linear-gradient(135deg, #fff 30%, var(--accent) 70%, #ff9a3c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-
-        header h1 span { color: var(--accent); }
 
         header p {
-            margin-top: 10px;
+            margin-top: 12px;
             color: var(--muted);
-            font-size: 0.92em;
+            font-size: 0.93em;
             position: relative;
         }
 
-        /* ─── Desktop layout (>780px) ─── */
+        /* ── Desktop layout ── */
         .page {
-            max-width: 1180px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 32px 20px 60px;
             display: grid;
-            grid-template-columns: 330px 1fr;
-            gap: 26px;
+            grid-template-columns: 320px 1fr;
+            gap: 28px;
             align-items: start;
         }
 
@@ -107,7 +116,7 @@
         }
 
         .sec-label {
-            font-size: 0.63em;
+            font-size: 0.62em;
             font-weight: 700;
             letter-spacing: 2.5px;
             text-transform: uppercase;
@@ -120,7 +129,7 @@
         .controls-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 18px;
+            border-radius: 20px;
             padding: 18px 16px;
             display: flex;
             flex-direction: column;
@@ -128,82 +137,63 @@
             overflow-y: auto;
             flex: 1;
             scrollbar-width: thin;
-            scrollbar-color: rgba(255,255,255,0.08) transparent;
+            scrollbar-color: rgba(255,255,255,0.07) transparent;
         }
 
-        .controls-card::-webkit-scrollbar { width: 4px; }
-        .controls-card::-webkit-scrollbar-track { background: transparent; }
-        .controls-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+        .controls-card::-webkit-scrollbar { width: 3px; }
+        .controls-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
 
-        /* ─── Sliders ─── */
-        .slider-group { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+        /* ── Sliders ── */
+        .slider-group { display: flex; flex-direction: column; gap: 9px; flex-shrink: 0; }
 
-        .slider-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
+        .slider-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 
         .slider-name { font-size: 0.875em; font-weight: 500; color: var(--text); }
 
         .slider-val {
-            font-size: 0.78em;
-            font-weight: 600;
+            font-size: 0.75em; font-weight: 700;
             color: var(--accent);
             background: var(--accent-dim);
-            padding: 2px 10px;
-            border-radius: 20px;
-            min-width: 32px;
-            text-align: center;
-            flex-shrink: 0;
+            padding: 2px 9px; border-radius: 20px;
+            min-width: 30px; text-align: center; flex-shrink: 0;
         }
 
         input[type="range"] {
             -webkit-appearance: none;
-            width: 100%;
-            height: 6px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 4px;
-            outline: none;
-            cursor: pointer;
+            width: 100%; height: 5px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 4px; outline: none; cursor: pointer;
         }
 
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 22px;
-            height: 22px;
-            background: var(--accent);
-            border-radius: 50%;
+            width: 20px; height: 20px;
+            background: var(--accent); border-radius: 50%;
             box-shadow: 0 0 0 4px var(--accent-glow);
             transition: transform 0.15s, box-shadow 0.15s;
         }
 
         input[type="range"]:hover::-webkit-slider-thumb,
         input[type="range"]:active::-webkit-slider-thumb {
-            transform: scale(1.15);
+            transform: scale(1.2);
             box-shadow: 0 0 0 6px var(--accent-glow);
         }
 
         input[type="range"]::-moz-range-thumb {
-            width: 22px; height: 22px;
-            background: var(--accent);
-            border-radius: 50%; border: none;
+            width: 20px; height: 20px;
+            background: var(--accent); border-radius: 50%; border: none;
         }
 
-        /* ─── Sub-sections ─── */
+        /* ── Sub-sections ── */
         .temp-sub {
-            margin-top: 2px;
-            padding: 14px;
+            margin-top: 2px; padding: 13px 13px;
             background: rgba(255,126,179,0.05);
-            border: 1px solid rgba(255,126,179,0.14);
+            border: 1px solid rgba(255,126,179,0.13);
             border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            display: flex; flex-direction: column; gap: 9px;
         }
 
-        .temp-sub .slider-name { font-size: 0.84em; color: var(--muted); }
+        .temp-sub .slider-name { font-size: 0.83em; color: var(--text2); }
         .temp-sub .slider-val  { color: var(--temp-color); background: var(--temp-dim); }
 
         .temp-sub input[type="range"] {
@@ -212,54 +202,39 @@
 
         .temp-sub input[type="range"]::-webkit-slider-thumb {
             background: var(--temp-color);
-            box-shadow: 0 0 0 4px rgba(255,126,179,0.25);
-        }
-
-        .temp-sub input[type="range"]:active::-webkit-slider-thumb {
-            box-shadow: 0 0 0 6px rgba(255,126,179,0.25);
+            box-shadow: 0 0 0 4px rgba(255,126,179,0.22);
         }
 
         .temp-sub input[type="range"]::-moz-range-thumb { background: var(--temp-color); }
 
         .sub-hint { font-size: 0.7em; color: var(--muted); line-height: 1.45; }
-
         .divider { height: 1px; background: var(--border); flex-shrink: 0; }
 
-        /* ─── Results top bar ─── */
+        /* ── Results bar ── */
         .results-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-            gap: 10px;
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 16px; gap: 10px; flex-wrap: wrap;
         }
 
         .results-top .sec-label { margin-bottom: 0; }
 
         .show-pills {
-            display: flex;
-            gap: 5px;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            padding-bottom: 2px;
+            display: flex; gap: 5px;
+            overflow-x: auto; -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; padding-bottom: 2px;
         }
 
         .show-pills::-webkit-scrollbar { display: none; }
 
         .pill {
-            font-size: 0.72em;
-            font-weight: 600;
-            padding: 6px 13px;
-            border-radius: 20px;
+            font-size: 0.72em; font-weight: 600;
+            padding: 6px 14px; border-radius: 20px;
             border: 1px solid var(--border);
-            background: transparent;
-            color: var(--muted);
+            background: transparent; color: var(--muted);
             cursor: pointer;
             transition: background 0.15s, color 0.15s, border-color 0.15s;
             font-family: 'DM Sans', sans-serif;
-            white-space: nowrap;
-            flex-shrink: 0;
+            white-space: nowrap; flex-shrink: 0;
             touch-action: manipulation;
         }
 
@@ -267,191 +242,287 @@
 
         .pill.active {
             background: var(--accent-dim);
-            border-color: rgba(232,164,74,0.4);
+            border-color: rgba(232,164,74,0.45);
             color: var(--accent);
         }
 
-        /* ─── Destination cards ─── */
+        /* ── Destination cards ── */
         #results { display: flex; flex-direction: column; gap: 10px; }
 
         .dest-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 16px 18px;
-            display: grid;
-            grid-template-columns: 48px 1fr auto;
-            align-items: center;
-            gap: 14px;
-            transition: transform 0.17s ease, border-color 0.17s ease, box-shadow 0.17s ease;
-            cursor: default;
+            border-radius: 18px;
+            overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .dest-card:hover {
-            transform: translateX(5px);
-            border-color: rgba(232,164,74,0.22);
-            box-shadow: 0 6px 28px rgba(0,0,0,0.35), -3px 0 0 var(--accent);
+            border-color: rgba(232,164,74,0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
 
         .dest-card.r1 {
-            border-color: rgba(255,209,102,0.3);
-            background: linear-gradient(135deg, var(--surface) 0%, rgba(255,209,102,0.05) 100%);
+            border-color: rgba(255,209,102,0.25);
+            box-shadow: 0 0 0 1px rgba(255,209,102,0.08), 0 0 40px rgba(255,209,102,0.06);
+            background: linear-gradient(160deg, var(--surface) 0%, rgba(255,209,102,0.04) 100%);
         }
 
-        .dest-card.r2 { border-color: rgba(176,184,200,0.2); }
-        .dest-card.r3 { border-color: rgba(205,138,90,0.2); }
+        .dest-card.r2 { border-color: rgba(184,196,216,0.18); }
+        .dest-card.r3 { border-color: rgba(212,146,94,0.18); }
 
+        /* Card main row */
+        .card-main {
+            display: grid;
+            grid-template-columns: 50px 1fr auto;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Rank badge */
         .rank {
-            width: 48px; height: 48px;
-            border-radius: 13px;
+            width: 50px; height: 50px;
+            border-radius: 14px;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            font-weight: 700; font-size: 1.05em;
+            font-weight: 700; font-size: 1.1em;
             flex-shrink: 0;
             background: rgba(255,255,255,0.04);
-            color: var(--muted);
-            line-height: 1;
+            color: var(--muted); line-height: 1;
         }
 
-        .rank small { font-size: 0.46em; font-weight: 400; opacity: 0.7; }
-        .rank.gold   { background: rgba(255,209,102,0.1); color: var(--gold); }
-        .rank.silver { background: rgba(176,184,200,0.1); color: var(--silver); }
-        .rank.bronze { background: rgba(205,138,90,0.1);  color: var(--bronze); }
+        .rank small { font-size: 0.44em; font-weight: 400; opacity: 0.7; }
+        .rank.gold   { background: rgba(255,209,102,0.12); color: var(--gold);   box-shadow: 0 0 16px rgba(255,209,102,0.1); }
+        .rank.silver { background: rgba(184,196,216,0.12); color: var(--silver); }
+        .rank.bronze { background: rgba(212,146,94,0.12);  color: var(--bronze); }
 
-        .dest-name {
-            font-weight: 600;
-            font-size: 0.97em;
-            color: var(--text);
-            margin-bottom: 7px;
-        }
+        /* Card body */
+        .card-body { min-width: 0; }
+        .dest-name { font-weight: 600; font-size: 0.97em; color: var(--text); margin-bottom: 7px; }
 
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-bottom: 9px;
-        }
+        .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
 
         .tag {
-            font-size: 0.67em;
-            padding: 3px 8px;
+            font-size: 0.66em; padding: 3px 8px;
             border-radius: 20px;
-            background: rgba(255,255,255,0.05);
-            color: var(--muted);
+            background: rgba(255,255,255,0.05); color: var(--muted);
             white-space: nowrap;
         }
 
-        .tag.temp-tag     { background: var(--temp-dim); color: var(--temp-color); }
-        .tag.temp-match   { background: rgba(78,205,196,0.1); color: var(--green); }
-        .tag.unesco-tag   { background: rgba(192,132,252,0.18); color: #d8b4fe; font-weight: 600; }
+        .tag.temp-tag   { background: var(--temp-dim); color: var(--temp-color); }
+        .tag.temp-match { background: rgba(78,205,196,0.1); color: var(--green); }
+        .tag.unesco-tag { background: rgba(176,124,248,0.15); color: #c4b5fd; font-weight: 600; }
 
+        /* Mini bars */
         .mini-bar-row { display: flex; gap: 4px; }
 
-        .mini-bar-wrap {
-            flex: 1;
-            display: flex; flex-direction: column;
-            align-items: center; gap: 4px;
-        }
+        .mini-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
 
-        .mini-bar-bg {
-            width: 100%; height: 5px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 3px; overflow: hidden;
-        }
+        .mini-bar-bg { width: 100%; height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
 
-        .mini-bar-fill {
-            height: 100%; border-radius: 3px;
-            background: var(--accent);
-            transition: width 0.3s ease;
-        }
-
+        .mini-bar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.35s ease; }
         .mini-bar-fill.temp-bar     { background: var(--temp-color); }
         .mini-bar-fill.heritage-bar { background: var(--heritage-color); }
 
-        .mini-bar-label { font-size: 0.58em; color: var(--muted); white-space: nowrap; }
+        .mini-bar-label { font-size: 0.56em; color: var(--muted); white-space: nowrap; }
 
-        .score-wrap { text-align: right; flex-shrink: 0; }
+        /* ── Score ring (SVG) ── */
+        .score-col {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 8px; flex-shrink: 0;
+        }
 
-        .score-num {
+        .score-ring { display: block; overflow: visible; }
+
+        .ring-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 3; }
+
+        .ring-fill {
+            fill: none; stroke-width: 3;
+            stroke-linecap: round;
+            transform-origin: center;
+            transform: rotate(-90deg);
+            transition: stroke-dasharray 0.5s cubic-bezier(0.4,0,0.2,1), stroke 0.3s;
+        }
+
+        .ring-text {
             font-family: 'Playfair Display', serif;
-            font-size: 2.1em; font-weight: 700;
-            color: var(--accent); line-height: 1;
+            font-weight: 700; font-size: 9px;
+            text-anchor: middle; dominant-baseline: central;
+            transition: fill 0.3s;
         }
 
-        .score-lbl {
-            font-size: 0.56em; color: var(--muted);
-            text-transform: uppercase; letter-spacing: 1px; margin-top: 3px;
+        .budget-btn {
+            font-size: 0.65em; font-weight: 600;
+            padding: 5px 10px; border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(232,164,74,0.08); color: var(--accent);
+            cursor: pointer; white-space: nowrap;
+            font-family: 'DM Sans', sans-serif;
+            transition: background 0.15s, border-color 0.15s;
+            touch-action: manipulation;
         }
 
-        /* ─── Mobile styles (<= 780px) ─── */
-        @media (max-width: 780px) {
+        .budget-btn:hover { background: rgba(232,164,74,0.16); border-color: rgba(232,164,74,0.4); }
+        .budget-btn.open  { background: rgba(232,164,74,0.2);  border-color: rgba(232,164,74,0.5); }
 
-            header {
-                padding: 36px 20px 28px;
-            }
-
-            /* Single-column layout, sidebar hidden */
-            .page {
-                grid-template-columns: 1fr;
-                padding: 20px 14px 120px; /* bottom padding for FAB */
-                gap: 0;
-            }
-
-            .sidebar { display: none; } /* replaced by bottom sheet */
-
-            /* Cards: full-width, slightly simplified */
-            .dest-card {
-                grid-template-columns: 44px 1fr auto;
-                padding: 14px 14px;
-                gap: 11px;
-                border-radius: 14px;
-            }
-
-            /* Disable translateX hover on touch */
-            .dest-card:hover { transform: none; }
-            .dest-card:active { opacity: 0.85; }
-
-            .dest-name { font-size: 0.92em; }
-
-            .score-num { font-size: 1.8em; }
-
-            /* Smaller mini-bar labels on mobile */
-            .mini-bar-label { font-size: 0.52em; }
-
-            /* Pills: horizontally scrollable */
-            .show-pills { flex-wrap: nowrap; }
-
-            .pill { padding: 7px 14px; font-size: 0.75em; }
-
-            .results-top { margin-bottom: 12px; }
+        /* ── Budget Panel ── */
+        .budget-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1);
         }
 
-        /* ─── Bottom sheet (mobile) ─── */
+        .budget-panel.open { max-height: 700px; }
+
+        .budget-inner {
+            border-top: 1px solid var(--border);
+            padding: 20px 18px 22px;
+            background: var(--surface2);
+        }
+
+        /* Tier selector */
+        .budget-tiers {
+            display: flex; gap: 6px; margin-bottom: 18px;
+        }
+
+        .tier-btn {
+            flex: 1; padding: 8px 6px;
+            border-radius: 10px; border: 1px solid var(--border);
+            background: transparent; color: var(--muted);
+            font-family: 'DM Sans', sans-serif; font-size: 0.78em; font-weight: 600;
+            cursor: pointer; text-align: center;
+            transition: all 0.15s; touch-action: manipulation;
+        }
+
+        .tier-btn:hover { border-color: var(--accent); color: var(--text); }
+
+        .tier-btn.active-b { background: rgba(78,205,196,0.12); border-color: rgba(78,205,196,0.4); color: var(--green); }
+        .tier-btn.active-m { background: var(--accent-dim); border-color: rgba(232,164,74,0.45); color: var(--accent); }
+        .tier-btn.active-l { background: rgba(255,209,102,0.1); border-color: rgba(255,209,102,0.4); color: var(--gold); }
+
+        /* Days row */
+        .days-row {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .days-label { font-size: 0.82em; color: var(--text2); flex: 1; }
+
+        .days-ctrl { display: flex; align-items: center; gap: 0; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+
+        .days-btn {
+            width: 36px; height: 36px;
+            background: var(--surface3); border: none;
+            color: var(--text); font-size: 1.2em; font-weight: 600;
+            cursor: pointer; font-family: 'DM Sans', sans-serif;
+            transition: background 0.15s; touch-action: manipulation;
+        }
+
+        .days-btn:hover { background: rgba(232,164,74,0.15); }
+
+        .days-num {
+            min-width: 44px; height: 36px;
+            background: var(--surface2);
+            color: var(--accent); font-weight: 700; font-size: 0.95em;
+            display: flex; align-items: center; justify-content: center;
+            border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+        }
+
+        /* Category breakdown */
+        .breakdown { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+
+        .cat-row { display: flex; flex-direction: column; gap: 5px; }
+
+        .cat-header {
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .cat-left { display: flex; align-items: center; gap: 8px; }
+
+        .cat-icon { font-size: 1em; width: 20px; text-align: center; }
+
+        .cat-name { font-size: 0.8em; color: var(--text2); font-weight: 500; }
+
+        .cat-per { font-size: 0.72em; color: var(--muted); }
+
+        .cat-total { font-size: 0.82em; font-weight: 600; color: var(--text); }
+
+        .cat-bar-bg {
+            height: 5px; background: rgba(255,255,255,0.06);
+            border-radius: 3px; overflow: hidden;
+        }
+
+        .cat-bar-fill {
+            height: 100%; border-radius: 3px;
+            transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        /* Total */
+        .budget-total {
+            background: var(--surface3);
+            border: 1px solid var(--border2);
+            border-radius: 14px;
+            padding: 16px 18px;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 12px; margin-bottom: 14px;
+        }
+
+        .total-left {}
+
+        .total-label { font-size: 0.7em; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+
+        .total-inr {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7em; font-weight: 800; color: var(--accent); line-height: 1;
+        }
+
+        .total-usd { font-size: 0.78em; color: var(--muted); margin-top: 3px; }
+
+        .total-right { text-align: right; }
+
+        .per-day-lbl { font-size: 0.7em; color: var(--muted); margin-bottom: 4px; }
+
+        .per-day-val { font-size: 1.1em; font-weight: 700; color: var(--text2); }
+
+        /* Smart tip */
+        .smart-tip {
+            display: flex; align-items: flex-start; gap: 9px;
+            padding: 12px 14px;
+            background: rgba(176,124,248,0.06);
+            border: 1px solid rgba(176,124,248,0.13);
+            border-radius: 12px;
+        }
+
+        .tip-icon { font-size: 1em; flex-shrink: 0; margin-top: 1px; }
+
+        .tip-text { font-size: 0.78em; color: var(--text2); line-height: 1.5; }
+
+        .act-note { font-size: 0.72em; color: var(--muted); margin-top: 4px; }
+
+        /* ── Mobile bottom sheet ── */
         .sheet-backdrop {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.65);
-            z-index: 200;
-            opacity: 0;
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 200; opacity: 0;
             transition: opacity 0.3s ease;
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(3px);
         }
 
         .sheet-backdrop.open { opacity: 1; }
 
         .mobile-sheet {
-            display: none;
-            position: fixed;
+            display: none; position: fixed;
             bottom: 0; left: 0; right: 0;
             background: var(--surface2);
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-radius: var(--sheet-radius) var(--sheet-radius) 0 0;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px 24px 0 0;
             z-index: 201;
             transform: translateY(100%);
-            transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+            transition: transform 0.38s cubic-bezier(0.32,0.72,0,1);
             max-height: 88vh;
-            display: none;
             flex-direction: column;
         }
 
@@ -459,125 +530,86 @@
 
         .sheet-handle-bar {
             width: 44px; height: 5px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 3px;
-            margin: 14px auto 0;
-            flex-shrink: 0;
-            cursor: pointer;
+            background: rgba(255,255,255,0.12);
+            border-radius: 3px; margin: 14px auto 0; flex-shrink: 0; cursor: grab;
         }
 
         .sheet-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 20px 12px;
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 20px 12px; flex-shrink: 0;
             border-bottom: 1px solid var(--border);
         }
 
-        .sheet-title {
-            font-size: 0.8em;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--muted);
-        }
+        .sheet-title { font-size: 0.78em; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
 
         .sheet-close {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.07);
-            border: none;
-            color: var(--muted);
-            font-size: 1.1em;
-            cursor: pointer;
+            width: 32px; height: 32px; border-radius: 50%;
+            background: rgba(255,255,255,0.07); border: none;
+            color: var(--muted); font-size: 1.1em; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            touch-action: manipulation;
-            transition: background 0.15s;
+            touch-action: manipulation; transition: background 0.15s;
         }
 
         .sheet-close:hover { background: rgba(255,255,255,0.12); }
 
         .sheet-body {
-            overflow-y: auto;
-            flex: 1;
-            padding: 18px 20px 32px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
+            overflow-y: auto; flex: 1;
+            padding: 18px 20px 40px;
+            display: flex; flex-direction: column; gap: 18px;
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Sheet slider groups — slightly more spacious */
         .sheet-body .slider-group { gap: 12px; }
-        .sheet-body .slider-name  { font-size: 0.95em; }
-
-        /* Bigger thumbs in sheet for touch */
+        .sheet-body .slider-name { font-size: 0.95em; }
         .sheet-body input[type="range"] { height: 6px; }
+        .sheet-body input[type="range"]::-webkit-slider-thumb { width: 26px; height: 26px; }
 
-        .sheet-body input[type="range"]::-webkit-slider-thumb {
-            width: 26px;
-            height: 26px;
-        }
-
-        /* ─── FAB ─── */
+        /* ── FAB ── */
         .fab {
-            display: none;
-            position: fixed;
-            bottom: 28px;
-            right: 20px;
-            width: 58px; height: 58px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: #1a1008;
-            border: none;
-            cursor: pointer;
-            font-size: 1.5em;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 24px rgba(232,164,74,0.45);
-            z-index: 150;
+            display: none; position: fixed;
+            bottom: 28px; right: 20px;
+            width: 58px; height: 58px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #ff9a3c);
+            color: #1a1008; border: none; cursor: pointer;
+            font-size: 1.4em; align-items: center; justify-content: center;
+            box-shadow: 0 4px 24px rgba(232,164,74,0.4);
+            z-index: 150; touch-action: manipulation;
             transition: transform 0.2s, box-shadow 0.2s;
-            touch-action: manipulation;
         }
 
-        .fab:active { transform: scale(0.93); }
+        .fab:active { transform: scale(0.92); }
 
-        /* Active count badge on FAB */
-        .fab-badge {
-            position: absolute;
-            top: -2px; right: -2px;
-            width: 18px; height: 18px;
-            border-radius: 50%;
-            background: #ff7eb3;
-            color: white;
-            font-size: 0.48em;
-            font-weight: 700;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid var(--bg);
-        }
-
-        .fab-badge.visible { display: flex; }
-
+        /* ── Mobile overrides ── */
         @media (max-width: 780px) {
+            header { padding: 36px 20px 28px; }
+            .page { grid-template-columns: 1fr; padding: 18px 12px 120px; gap: 0; }
+            .sidebar { display: none; }
             .sheet-backdrop { display: block; pointer-events: none; }
             .sheet-backdrop.open { pointer-events: all; }
             .mobile-sheet { display: flex; }
             .fab { display: flex; }
+            .card-main { padding: 14px 14px; gap: 11px; }
+            .dest-card:hover { box-shadow: none; }
+            .score-ring { width: 56px !important; height: 56px !important; }
+            .mini-bar-label { font-size: 0.52em; }
+            .show-pills { flex-wrap: nowrap; }
+            .pill { padding: 7px 14px; font-size: 0.75em; }
+            .budget-inner { padding: 16px 14px 18px; }
+            .budget-tiers { gap: 5px; }
+            .tier-btn { font-size: 0.73em; padding: 7px 4px; }
+            .total-inr { font-size: 1.4em; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="eyebrow">Travel Intelligence</div>
-    <h1>India <span>Trip Planner</span></h1>
-    <p>Weight what matters — rankings update instantly across 37 destinations.</p>
+    <div class="header-glow"></div>
+    <div class="eyebrow">Travel Intelligence · 37 Destinations</div>
+    <h1>India Trip Planner</h1>
+    <p>Weight what matters · Budget calculator · UNESCO & heritage scoring</p>
 </header>
 
-<!-- Desktop layout -->
 <div class="page">
     <aside class="sidebar">
         <div class="sec-label">Your Priorities</div>
@@ -605,64 +637,279 @@
     <div class="sheet-handle-bar" id="sheet-handle"></div>
     <div class="sheet-header">
         <span class="sheet-title">Your Priorities</span>
-        <button class="sheet-close" id="sheet-close" aria-label="Close">✕</button>
+        <button class="sheet-close" id="sheet-close">✕</button>
     </div>
     <div class="sheet-body" id="controls-mobile"></div>
 </div>
 
-<!-- FAB -->
-<button class="fab" id="fab" aria-label="Adjust priorities">
-    <span>⚙</span>
-    <div class="fab-badge" id="fab-badge">!</div>
-</button>
+<button class="fab" id="fab" aria-label="Adjust priorities">⚙</button>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
+    const USD_RATE = 83;   // 1 USD ≈ ₹83
+    const EUR_RATE = 90;
+    const GBP_RATE = 105;
+
     const destinations = [
-        // South India
-        { name: 'Munnar, Kerala',           region: 'South',      avgTemp: 18, unesco: false, scores: { cleanliness: 9,  sites: 9,  safety: 10, price: 8, connectivity: 6,  food: 8,  climate: 9,  heritage: 5 } },
-        { name: 'Alleppey, Kerala',          region: 'South',      avgTemp: 29, unesco: false, scores: { cleanliness: 8,  sites: 9,  safety: 9,  price: 6, connectivity: 7,  food: 9,  climate: 7,  heritage: 4 } },
-        { name: 'Fort Kochi, Kerala',        region: 'South',      avgTemp: 28, unesco: false, scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 8, connectivity: 9,  food: 9,  climate: 7,  heritage: 7 } },
-        { name: 'Varkala, Kerala',           region: 'South',      avgTemp: 28, unesco: false, scores: { cleanliness: 8,  sites: 8,  safety: 8,  price: 7, connectivity: 6,  food: 8,  climate: 7,  heritage: 4 } },
-        { name: 'Mysuru, Karnataka',         region: 'South',      avgTemp: 25, unesco: false, scores: { cleanliness: 8,  sites: 9,  safety: 9,  price: 8, connectivity: 8,  food: 9,  climate: 8,  heritage: 8 } },
-        { name: 'Coorg, Karnataka',          region: 'South',      avgTemp: 20, unesco: false, scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 7, connectivity: 6,  food: 8,  climate: 9,  heritage: 4 } },
-        { name: 'Hampi, Karnataka',          region: 'South',      avgTemp: 28, unesco: true,  scores: { cleanliness: 6,  sites: 10, safety: 8,  price: 9, connectivity: 6,  food: 6,  climate: 6,  heritage: 10 } },
-        { name: 'Pondicherry',               region: 'South',      avgTemp: 28, unesco: false, scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 8, connectivity: 8,  food: 9,  climate: 7,  heritage: 6 } },
-        { name: 'Ooty, Tamil Nadu',          region: 'South',      avgTemp: 17, unesco: true,  scores: { cleanliness: 7,  sites: 7,  safety: 9,  price: 8, connectivity: 6,  food: 7,  climate: 9,  heritage: 6 } },
-        { name: 'Kodaikanal, Tamil Nadu',    region: 'South',      avgTemp: 16, unesco: false, scores: { cleanliness: 7,  sites: 7,  safety: 9,  price: 8, connectivity: 5,  food: 7,  climate: 9,  heritage: 4 } },
-        { name: 'Mahabalipuram, Tamil Nadu', region: 'South',      avgTemp: 28, unesco: true,  scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 8,  food: 7,  climate: 7,  heritage: 10 } },
-        { name: 'Hyderabad, Telangana',      region: 'South',      avgTemp: 26, unesco: false, scores: { cleanliness: 6,  sites: 8,  safety: 7,  price: 7, connectivity: 9,  food: 10, climate: 6,  heritage: 8 } },
-        // Goa
-        { name: 'South Goa',                 region: 'West',       avgTemp: 29, unesco: true,  scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 7, connectivity: 9,  food: 10, climate: 7,  heritage: 8 } },
-        { name: 'North Goa',                 region: 'West',       avgTemp: 29, unesco: true,  scores: { cleanliness: 7,  sites: 7,  safety: 8,  price: 7, connectivity: 9,  food: 9,  climate: 7,  heritage: 8 } },
-        // Rajasthan
-        { name: 'Udaipur, Rajasthan',        region: 'North',      avgTemp: 27, unesco: false, scores: { cleanliness: 7,  sites: 10, safety: 8,  price: 7, connectivity: 8,  food: 10, climate: 6,  heritage: 8 } },
-        { name: 'Jaipur, Rajasthan',         region: 'North',      avgTemp: 26, unesco: true,  scores: { cleanliness: 6,  sites: 9,  safety: 7,  price: 8, connectivity: 9,  food: 9,  climate: 6,  heritage: 9 } },
-        { name: 'Jodhpur, Rajasthan',        region: 'North',      avgTemp: 27, unesco: true,  scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 8,  food: 9,  climate: 6,  heritage: 8 } },
-        { name: 'Jaisalmer, Rajasthan',      region: 'North',      avgTemp: 28, unesco: true,  scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 7,  food: 8,  climate: 6,  heritage: 9 } },
-        { name: 'Pushkar, Rajasthan',        region: 'North',      avgTemp: 25, unesco: false, scores: { cleanliness: 6,  sites: 8,  safety: 8,  price: 8, connectivity: 7,  food: 7,  climate: 6,  heritage: 7 } },
-        // North India
-        { name: 'New Delhi',                 region: 'North',      avgTemp: 25, unesco: true,  scores: { cleanliness: 5,  sites: 9,  safety: 6,  price: 8, connectivity: 10, food: 10, climate: 5,  heritage: 10 } },
-        { name: 'Agra, Uttar Pradesh',       region: 'North',      avgTemp: 25, unesco: true,  scores: { cleanliness: 4,  sites: 10, safety: 6,  price: 8, connectivity: 10, food: 7,  climate: 5,  heritage: 10 } },
-        { name: 'Varanasi, Uttar Pradesh',   region: 'North',      avgTemp: 24, unesco: false, scores: { cleanliness: 4,  sites: 10, safety: 7,  price: 7, connectivity: 9,  food: 8,  climate: 5,  heritage: 9 } },
-        { name: 'Amritsar, Punjab',          region: 'North',      avgTemp: 22, unesco: false, scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 9,  food: 9,  climate: 6,  heritage: 9 } },
-        { name: 'Rishikesh, Uttarakhand',    region: 'North',      avgTemp: 20, unesco: false, scores: { cleanliness: 7,  sites: 8,  safety: 8,  price: 8, connectivity: 8,  food: 7,  climate: 8,  heritage: 7 } },
-        // Himalayas
-        { name: 'Shimla, Himachal Pradesh',  region: 'Himalayas',  avgTemp: 13, unesco: true,  scores: { cleanliness: 7,  sites: 7,  safety: 9,  price: 7, connectivity: 7,  food: 7,  climate: 9,  heritage: 7 } },
-        { name: 'Manali, Himachal Pradesh',  region: 'Himalayas',  avgTemp: 10, unesco: false, scores: { cleanliness: 7,  sites: 10, safety: 8,  price: 8, connectivity: 5,  food: 7,  climate: 9,  heritage: 5 } },
-        { name: 'Kasol, Himachal Pradesh',   region: 'Himalayas',  avgTemp: 14, unesco: false, scores: { cleanliness: 7,  sites: 8,  safety: 7,  price: 9, connectivity: 4,  food: 6,  climate: 9,  heritage: 3 } },
-        { name: 'McLeod Ganj, HP',           region: 'Himalayas',  avgTemp: 16, unesco: false, scores: { cleanliness: 7,  sites: 8,  safety: 9,  price: 8, connectivity: 6,  food: 7,  climate: 9,  heritage: 7 } },
-        { name: 'Leh-Ladakh',                region: 'Himalayas',  avgTemp: 8,  unesco: false, scores: { cleanliness: 8,  sites: 10, safety: 8,  price: 7, connectivity: 4,  food: 6,  climate: 8,  heritage: 8 } },
-        { name: 'Spiti Valley, HP',          region: 'Himalayas',  avgTemp: 7,  unesco: false, scores: { cleanliness: 9,  sites: 10, safety: 7,  price: 8, connectivity: 3,  food: 5,  climate: 7,  heritage: 8 } },
-        // Northeast
-        { name: 'Gangtok, Sikkim',           region: 'Northeast',  avgTemp: 15, unesco: false, scores: { cleanliness: 10, sites: 9,  safety: 10, price: 8, connectivity: 4,  food: 7,  climate: 9,  heritage: 6 } },
-        { name: 'Darjeeling, West Bengal',   region: 'Northeast',  avgTemp: 14, unesco: true,  scores: { cleanliness: 7,  sites: 9,  safety: 9,  price: 8, connectivity: 5,  food: 7,  climate: 9,  heritage: 7 } },
-        { name: 'Shillong, Meghalaya',       region: 'Northeast',  avgTemp: 18, unesco: false, scores: { cleanliness: 8,  sites: 9,  safety: 8,  price: 8, connectivity: 6,  food: 8,  climate: 8,  heritage: 5 } },
-        { name: 'Ziro Valley, Arunachal',    region: 'Northeast',  avgTemp: 18, unesco: false, scores: { cleanliness: 9,  sites: 9,  safety: 9,  price: 9, connectivity: 3,  food: 6,  climate: 8,  heritage: 7 } },
-        // Islands & Remote
-        { name: 'Andaman Islands',           region: 'Islands',    avgTemp: 29, unesco: false, scores: { cleanliness: 9,  sites: 10, safety: 9,  price: 5, connectivity: 5,  food: 7,  climate: 8,  heritage: 6 } },
-        { name: 'Rann of Kutch, Gujarat',    region: 'West',       avgTemp: 27, unesco: true,  scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 6,  food: 7,  climate: 6,  heritage: 8 } },
+      // ── South India ──
+      { name:'Munnar, Kerala', region:'South', avgTemp:18, unesco:false,
+        scores:{ cleanliness:9,sites:9,safety:10,price:8,connectivity:6,food:8,climate:9,heritage:5 },
+        budget:{ b:[700,300,350,200], m:[2800,850,650,550], l:[10000,2200,1600,1800],
+          tip:'Visit Oct–Mar for misty cool mornings. Book tea estate stays directly for 30% savings.',
+          actNote:'Tea plantation tours, Eravikulam National Park, Mattupetty boating, Valara waterfalls',
+          peak:[12,1,2] }},
+
+      { name:'Alleppey, Kerala', region:'South', avgTemp:29, unesco:false,
+        scores:{ cleanliness:8,sites:9,safety:9,price:6,connectivity:7,food:9,climate:7,heritage:4 },
+        budget:{ b:[800,320,600,500], m:[3200,950,1200,1800], l:[12000,2500,2800,5000],
+          tip:'Book houseboats mid-week for 20–30% off peak rates. Budget boats still feel magical.',
+          actNote:'Houseboat overnight cruise, canoe village tour, local backwater ferry rides, fishing',
+          peak:[12,1,2,3] }},
+
+      { name:'Fort Kochi, Kerala', region:'South', avgTemp:28, unesco:false,
+        scores:{ cleanliness:8,sites:8,safety:9,price:8,connectivity:9,food:9,climate:7,heritage:7 },
+        budget:{ b:[650,380,200,200], m:[2500,950,500,600], l:[8000,2500,1200,1500],
+          tip:'Walk everywhere in the fort area — it\'s tiny and beautiful. Ferry rides cost just ₹5.',
+          actNote:'Chinese fishing nets viewing, spice markets, Dutch Palace, St Francis Church',
+          peak:[11,12,1,2] }},
+
+      { name:'Varkala, Kerala', region:'South', avgTemp:28, unesco:false,
+        scores:{ cleanliness:8,sites:8,safety:8,price:7,connectivity:6,food:8,climate:7,heritage:4 },
+        budget:{ b:[600,380,200,200], m:[2200,900,500,500], l:[7500,2200,1000,1200],
+          tip:'The cliff area has great views; stay slightly inland for 40% cheaper accommodation.',
+          actNote:'Cliff beach, Janardhana Swami Temple, Papanasam beach, Ayurveda sessions',
+          peak:[11,12,1,2,3] }},
+
+      { name:'Mysuru, Karnataka', region:'South', avgTemp:25, unesco:false,
+        scores:{ cleanliness:8,sites:9,safety:9,price:8,connectivity:8,food:9,climate:8,heritage:8 },
+        budget:{ b:[600,300,200,250], m:[2200,850,500,650], l:[7500,2000,1100,1500],
+          tip:'Visit during Dasara (Oct) for the grand palace illumination — free and spectacular.',
+          actNote:'Mysore Palace, Chamundeshwari Temple, Brindavan Gardens light show, Devaraja Market',
+          peak:[10,11,12,1] }},
+
+      { name:'Coorg, Karnataka', region:'South', avgTemp:20, unesco:false,
+        scores:{ cleanliness:8,sites:8,safety:9,price:7,connectivity:6,food:8,climate:9,heritage:4 },
+        budget:{ b:[700,300,350,200], m:[2600,850,700,550], l:[9500,2200,1500,1500],
+          tip:'Rent a scooter (₹400/day) to reach coffee estates. Plantation homestays include meals.',
+          actNote:'Coffee plantation walks, Abbey Falls, Raja\'s Seat viewpoint, white water rafting',
+          peak:[10,11,12,1,2] }},
+
+      { name:'Hampi, Karnataka', region:'South', avgTemp:28, unesco:true,
+        scores:{ cleanliness:6,sites:10,safety:8,price:9,connectivity:6,food:6,climate:6,heritage:10 },
+        budget:{ b:[400,250,200,300], m:[1600,650,450,700], l:[5500,1800,1000,1500],
+          tip:'Rent a bicycle (₹100/day) to explore ruins — many sites are spread out. Ideal 2–3 days.',
+          actNote:'Virupaksha Temple, Vittala Temple complex, stone chariot, boulder hopping, sunset at Matanga Hill',
+          peak:[10,11,12,1,2] }},
+
+      { name:'Pondicherry', region:'South', avgTemp:28, unesco:false,
+        scores:{ cleanliness:8,sites:8,safety:9,price:8,connectivity:8,food:9,climate:7,heritage:6 },
+        budget:{ b:[700,350,150,200], m:[2600,950,400,500], l:[8500,2500,900,1200],
+          tip:'French Quarter is walkable & free. Try Alliance Française for cultural events.',
+          actNote:'French Quarter, Auroville, Sri Aurobindo Ashram, Paradise Beach, yoga retreats',
+          peak:[11,12,1,2,3] }},
+
+      { name:'Ooty, Tamil Nadu', region:'South', avgTemp:17, unesco:true,
+        scores:{ cleanliness:7,sites:7,safety:9,price:8,connectivity:6,food:7,climate:9,heritage:6 },
+        budget:{ b:[600,300,200,200], m:[2000,750,500,500], l:[7000,1900,1100,1200],
+          tip:'The UNESCO Nilgiri Mountain Railway is the highlight — book seats a week in advance.',
+          actNote:'Nilgiri Mountain Railway (UNESCO), Botanical Gardens, Doddabetta peak, Ooty Lake boating',
+          peak:[4,5,6] }},
+
+      { name:'Kodaikanal, Tamil Nadu', region:'South', avgTemp:16, unesco:false,
+        scores:{ cleanliness:7,sites:7,safety:9,price:8,connectivity:5,food:7,climate:9,heritage:4 },
+        budget:{ b:[600,300,200,200], m:[2000,700,500,450], l:[6500,1900,1000,1100],
+          tip:'Rent a cycle (₹100/hr) around the lake. Avoid May–June peak when prices double.',
+          actNote:'Kodai Lake cycling, Coaker\'s Walk, Pillar Rocks, Bryant Park, Silver Cascade falls',
+          peak:[4,5] }},
+
+      { name:'Mahabalipuram, Tamil Nadu', region:'South', avgTemp:28, unesco:true,
+        scores:{ cleanliness:7,sites:9,safety:8,price:8,connectivity:8,food:7,climate:7,heritage:10 },
+        budget:{ b:[600,300,200,250], m:[2000,800,500,600], l:[6000,2000,1000,1500],
+          tip:'Entry to all monuments on one ₹40 ticket. Best visited early morning before crowds.',
+          actNote:'Shore Temple (UNESCO), Arjuna\'s Penance, Five Rathas, Krishna\'s Butter Ball, beach',
+          peak:[11,12,1,2] }},
+
+      { name:'Hyderabad, Telangana', region:'South', avgTemp:26, unesco:false,
+        scores:{ cleanliness:6,sites:8,safety:7,price:7,connectivity:9,food:10,climate:6,heritage:8 },
+        budget:{ b:[700,300,200,250], m:[2600,850,550,650], l:[9500,2500,1300,1600],
+          tip:'Best biryani is at Paradise (₹200) — not fancy but authentic. Visit Golconda at sunset.',
+          actNote:'Charminar, Golconda Fort, Qutb Shahi Tombs, Hussain Sagar lake, Laad Bazaar shopping',
+          peak:[10,11,12,1,2,3] }},
+
+      // ── Goa ──
+      { name:'South Goa', region:'West', avgTemp:29, unesco:true,
+        scores:{ cleanliness:8,sites:8,safety:9,price:7,connectivity:9,food:10,climate:7,heritage:8 },
+        budget:{ b:[800,400,350,350], m:[3800,1300,750,950], l:[16000,3800,1700,2800],
+          tip:'Nov–Feb is peak. Apr–May & Sep–Oct is off-season with 40–60% cheaper stays.',
+          actNote:'Palolem Beach, Old Goa churches (UNESCO), dolphin boat tours, water sports, sunset cruises',
+          peak:[12,1,2] }},
+
+      { name:'North Goa', region:'West', avgTemp:29, unesco:true,
+        scores:{ cleanliness:7,sites:7,safety:8,price:7,connectivity:9,food:9,climate:7,heritage:8 },
+        budget:{ b:[700,400,350,350], m:[3200,1200,750,950], l:[13000,3200,1600,2500],
+          tip:'Rent a scooter (₹400/day) to hop between beaches. Best nightlife in all of India.',
+          actNote:'Baga/Calangute beaches, Old Goa Basilica (UNESCO), Anjuna flea market, Fort Aguada, nightlife',
+          peak:[12,1,2] }},
+
+      // ── Rajasthan ──
+      { name:'Udaipur, Rajasthan', region:'North', avgTemp:27, unesco:false,
+        scores:{ cleanliness:7,sites:10,safety:8,price:7,connectivity:8,food:10,climate:6,heritage:8 },
+        budget:{ b:[700,320,220,350], m:[3200,950,550,900], l:[14000,2800,1400,2500],
+          tip:'Book a rooftop restaurant for sunset over the lake — this costs nothing extra.',
+          actNote:'City Palace, Lake Pichola boat ride, Jag Mandir Island, Saheliyon ki Bari, vintage car museum',
+          peak:[10,11,12,1,2] }},
+
+      { name:'Jaipur, Rajasthan', region:'North', avgTemp:26, unesco:true,
+        scores:{ cleanliness:6,sites:9,safety:7,price:8,connectivity:9,food:9,climate:6,heritage:9 },
+        budget:{ b:[700,320,220,350], m:[2700,950,650,900], l:[11000,2500,1600,2500],
+          tip:'Composite ticket (₹1000) covers Amber Fort, City Palace & 4 more — great value.',
+          actNote:'Amber Fort, City Palace, Hawa Mahal, Jantar Mantar (UNESCO), Nahargarh Fort sunset',
+          peak:[10,11,12,1,2,3] }},
+
+      { name:'Jodhpur, Rajasthan', region:'North', avgTemp:27, unesco:true,
+        scores:{ cleanliness:7,sites:9,safety:8,price:8,connectivity:8,food:9,climate:6,heritage:8 },
+        budget:{ b:[700,300,220,300], m:[2700,850,550,800], l:[11000,2200,1300,2200],
+          tip:'Stay in the Blue City area for rooftop views of Mehrangarh — ₹5 rupee chai at sunrise.',
+          actNote:'Mehrangarh Fort (Hill Fort UNESCO), Jaswant Thada, Umaid Bhawan, Clock Tower bazaar',
+          peak:[10,11,12,1,2,3] }},
+
+      { name:'Jaisalmer, Rajasthan', region:'North', avgTemp:28, unesco:true,
+        scores:{ cleanliness:7,sites:9,safety:8,price:8,connectivity:7,food:8,climate:6,heritage:9 },
+        budget:{ b:[600,300,220,500], m:[2600,850,550,1400], l:[10000,2200,1300,3500],
+          tip:'Book camel safari directly with desert camp operators (skip hotel middlemen) to save 30%.',
+          actNote:'Jaisalmer Fort (UNESCO), Patwon ki Haveli, Sam Sand Dunes camel safari, overnight camp',
+          peak:[10,11,12,1,2] }},
+
+      { name:'Pushkar, Rajasthan', region:'North', avgTemp:25, unesco:false,
+        scores:{ cleanliness:6,sites:8,safety:8,price:8,connectivity:7,food:7,climate:6,heritage:7 },
+        budget:{ b:[500,250,150,250], m:[2000,700,400,600], l:[7500,1900,900,1500],
+          tip:'Brahma Temple is free. Avoid Camel Fair period (Nov) unless you specifically want it.',
+          actNote:'Brahma Temple, Pushkar Lake ghats, Savitri Temple ropeway, desert jeep safari, camel rides',
+          peak:[10,11] }},
+
+      // ── North India ──
+      { name:'New Delhi', region:'North', avgTemp:25, unesco:true,
+        scores:{ cleanliness:5,sites:9,safety:6,price:8,connectivity:10,food:10,climate:5,heritage:10 },
+        budget:{ b:[700,320,270,350], m:[3200,1100,650,1000], l:[14000,3200,1700,2800],
+          tip:'Delhi Metro is world-class. Get a tourist card. Avoid Old Delhi auto-rickshaws — fix price first.',
+          actNote:'Red Fort, Qutub Minar, Humayun\'s Tomb (all UNESCO), India Gate, Chandni Chowk food tour',
+          peak:[10,11,12,1,2,3] }},
+
+      { name:'Agra, Uttar Pradesh', region:'North', avgTemp:25, unesco:true,
+        scores:{ cleanliness:4,sites:10,safety:6,price:8,connectivity:10,food:7,climate:5,heritage:10 },
+        budget:{ b:[650,300,220,800], m:[2700,850,550,1700], l:[11500,2200,1400,3500],
+          tip:'Taj Mahal sunrise entry is worth waking up for. Indian citizen ticket ₹50 vs foreigners ₹1,100.',
+          actNote:'Taj Mahal, Agra Fort, Itimad-ud-Daulah (all UNESCO), Mehtab Bagh sunset view, Fatehpur Sikri',
+          peak:[10,11,12,1,2,3] }},
+
+      { name:'Varanasi, Uttar Pradesh', region:'North', avgTemp:24, unesco:false,
+        scores:{ cleanliness:4,sites:10,safety:7,price:7,connectivity:9,food:8,climate:5,heritage:9 },
+        budget:{ b:[500,260,170,350], m:[2200,750,430,900], l:[9000,2000,1100,2500],
+          tip:'The free Ganga Aarti at Dashashwamedh Ghat at 7pm is one of India\'s most profound experiences.',
+          actNote:'Morning boat ride on Ganges, Ganga Aarti ceremony, Kashi Vishwanath Temple, Sarnath ruins',
+          peak:[10,11,12,1,2] }},
+
+      { name:'Amritsar, Punjab', region:'North', avgTemp:22, unesco:false,
+        scores:{ cleanliness:7,sites:9,safety:8,price:8,connectivity:9,food:9,climate:6,heritage:9 },
+        budget:{ b:[600,300,170,200], m:[2100,850,430,550], l:[7500,2100,1000,1400],
+          tip:'Golden Temple is free and open 24/7. The langar (free community meal) feeds 100,000 people/day.',
+          actNote:'Golden Temple (free), Wagah Border flag ceremony, Jallianwala Bagh, Durgiana Temple',
+          peak:[10,11,12,1,2] }},
+
+      { name:'Rishikesh, Uttarakhand', region:'North', avgTemp:20, unesco:false,
+        scores:{ cleanliness:7,sites:8,safety:8,price:8,connectivity:8,food:7,climate:8,heritage:7 },
+        budget:{ b:[500,270,170,400], m:[2100,750,430,1000], l:[9000,2000,1000,3000],
+          tip:'White water rafting is best Feb–May. Book yoga retreats at least 2 weeks ahead.',
+          actNote:'Ganges rafting, bungee jumping, Laxman Jhula, Beatles Ashram, multi-day yoga retreat',
+          peak:[2,3,4,5] }},
+
+      // ── Himalayas ──
+      { name:'Shimla, Himachal Pradesh', region:'Himalayas', avgTemp:13, unesco:true,
+        scores:{ cleanliness:7,sites:7,safety:9,price:7,connectivity:7,food:7,climate:9,heritage:7 },
+        budget:{ b:[700,300,220,250], m:[2600,850,550,600], l:[9500,2100,1300,1500],
+          tip:'Book Kalka-Shimla UNESCO toy train weeks ahead — window seats are worth the wait.',
+          actNote:'Kalka-Shimla Railway (UNESCO), The Ridge, Christ Church, Jakhu Temple, Kufri snow sports',
+          peak:[4,5,10,11,12,1] }},
+
+      { name:'Manali, Himachal Pradesh', region:'Himalayas', avgTemp:10, unesco:false,
+        scores:{ cleanliness:7,sites:10,safety:8,price:8,connectivity:5,food:7,climate:9,heritage:5 },
+        budget:{ b:[600,300,350,500], m:[2600,850,900,1400], l:[10000,2100,2200,3500],
+          tip:'Rohtang Pass permit must be booked online 2 days in advance (₹700 for jeep, 50 per day limit).',
+          actNote:'Rohtang Pass, Solang Valley skiing, Hadimba Devi Temple, Beas River rafting, paragliding',
+          peak:[6,7,8] }},
+
+      { name:'Kasol, Himachal Pradesh', region:'Himalayas', avgTemp:14, unesco:false,
+        scores:{ cleanliness:7,sites:8,safety:7,price:9,connectivity:4,food:6,climate:9,heritage:3 },
+        budget:{ b:[400,260,230,250], m:[1600,660,600,600], l:[5500,1800,1500,1600],
+          tip:'Israeli restaurants are everywhere — try Kheerganga trek (12km) for stunning hot springs.',
+          actNote:'Kheerganga trek, Parvati River walks, Chalal village trek, Tosh village, camping',
+          peak:[5,6,7,8,9] }},
+
+      { name:'McLeod Ganj, HP', region:'Himalayas', avgTemp:16, unesco:false,
+        scores:{ cleanliness:7,sites:8,safety:9,price:8,connectivity:6,food:7,climate:9,heritage:7 },
+        budget:{ b:[500,270,180,250], m:[2100,750,450,600], l:[7500,2000,1000,1600],
+          tip:'Attend a free teaching by the Dalai Lama — register online. Tibetan food is excellent & cheap.',
+          actNote:'Tsuglagkhang Complex, Triund trek, Namgyal Monastery, Bhagsu waterfall, Tibetan market',
+          peak:[4,5,10,11] }},
+
+      { name:'Leh-Ladakh', region:'Himalayas', avgTemp:8, unesco:false,
+        scores:{ cleanliness:8,sites:10,safety:8,price:7,connectivity:4,food:6,climate:8,heritage:8 },
+        budget:{ b:[750,430,600,600], m:[3300,1100,1700,1700], l:[13000,2700,4500,4500],
+          tip:'Acclimatize for 2 days before any high-altitude activity. ILP permit (₹300) required online.',
+          actNote:'Pangong Lake, Nubra Valley, Khardung La pass, Hemis & Thiksey monasteries, Magnetic Hill',
+          peak:[6,7,8,9] }},
+
+      { name:'Spiti Valley, HP', region:'Himalayas', avgTemp:7, unesco:false,
+        scores:{ cleanliness:9,sites:10,safety:7,price:8,connectivity:3,food:5,climate:7,heritage:8 },
+        budget:{ b:[550,320,700,350], m:[2200,850,2200,900], l:[7500,2100,5500,2200],
+          tip:'Only accessible Jun–Oct. Hire a local driver for ₹4,000/day — they know every hidden monastery.',
+          actNote:'Key Monastery, Dhankar Monastery, Pin Valley trek, Chandratal Lake, fossils at Hikkim village',
+          peak:[7,8,9] }},
+
+      // ── Northeast ──
+      { name:'Gangtok, Sikkim', region:'Northeast', avgTemp:15, unesco:false,
+        scores:{ cleanliness:10,sites:9,safety:10,price:8,connectivity:4,food:7,climate:9,heritage:6 },
+        budget:{ b:[750,330,350,350], m:[2700,880,900,950], l:[10000,2200,2200,2700],
+          tip:'Book North Sikkim restricted area permit (₹300) via a Gangtok agency 2 days in advance.',
+          actNote:'Nathu La Pass, North Sikkim lakes, Rumtek Monastery, Nathula border, cable car ride',
+          peak:[3,4,10,11] }},
+
+      { name:'Darjeeling, West Bengal', region:'Northeast', avgTemp:14, unesco:true,
+        scores:{ cleanliness:7,sites:9,safety:9,price:8,connectivity:5,food:7,climate:9,heritage:7 },
+        budget:{ b:[650,320,250,250], m:[2600,850,650,650], l:[8500,2100,1600,1600],
+          tip:'UNESCO Darjeeling Himalayan Railway joyride is ₹1,300 — book at NJP station on arrival.',
+          actNote:'Toy Train (UNESCO), Tiger Hill sunrise over Kanchenjunga, Happy Valley Tea Estate, Batasia Loop',
+          peak:[4,5,10,11] }},
+
+      { name:'Shillong, Meghalaya', region:'Northeast', avgTemp:18, unesco:false,
+        scores:{ cleanliness:8,sites:9,safety:8,price:8,connectivity:6,food:8,climate:8,heritage:5 },
+        budget:{ b:[750,330,230,250], m:[2700,880,600,650], l:[8500,2200,1500,1600],
+          tip:'Rent a car to reach Cherrapunji & Dawki — both are 2 hours out and spectacular.',
+          actNote:'Living root bridges, Dawki crystal river, Nohkalikai falls, Don Bosco Museum, local music scene',
+          peak:[10,11,12,1,2,3] }},
+
+      { name:'Ziro Valley, Arunachal', region:'Northeast', avgTemp:18, unesco:false,
+        scores:{ cleanliness:9,sites:9,safety:9,price:9,connectivity:3,food:6,climate:8,heritage:7 },
+        budget:{ b:[450,280,350,250], m:[2000,700,950,650], l:[7000,1900,2500,1700],
+          tip:'Inner Line Permit (₹150) needed — apply online 2 weeks in advance. Almost no tourists!',
+          actNote:'Apatani tribal villages, Talley Valley reserve, Ziro Music Festival (Sep), bamboo architecture',
+          peak:[9,10,11] }},
+
+      // ── Islands & Remote ──
+      { name:'Andaman Islands', region:'Islands', avgTemp:29, unesco:false,
+        scores:{ cleanliness:9,sites:10,safety:9,price:5,connectivity:5,food:7,climate:8,heritage:6 },
+        budget:{ b:[900,450,450,700], m:[4500,1400,1200,2300], l:[20000,4000,3000,6000],
+          tip:'Buy the all-island ferry pass (₹700) upfront. Havelock & Neil Islands need advance accommodation.',
+          actNote:'Radhanagar Beach, scuba diving at Elephant Beach, Ross Island history, glass-bottom kayaking',
+          peak:[12,1,2,3] }},
+
+      { name:'Rann of Kutch, Gujarat', region:'West', avgTemp:27, unesco:true,
+        scores:{ cleanliness:7,sites:9,safety:8,price:8,connectivity:6,food:7,climate:6,heritage:8 },
+        budget:{ b:[750,330,350,350], m:[3300,880,900,950], l:[13000,2200,2200,2500],
+          tip:'Rann Utsav festival (Nov–Feb) packages are expensive — book early for 15% early bird discount.',
+          actNote:'White Rann sunset, Dholavira (UNESCO, Harappan site), Banni grasslands, tribal craft villages',
+          peak:[11,12,1,2] }},
     ];
 
     const parameters = {
@@ -676,12 +923,23 @@ document.addEventListener('DOMContentLoaded', () => {
         climate:      'Climate',
     };
 
-    const barClass = { climate: 'temp-bar', heritage: 'heritage-bar' };
+    const barColors = { climate: 'var(--temp-color)', heritage: 'var(--heritage-color)' };
 
     const regionColors = {
-        'South': '#a78bfa', 'North': '#60a5fa', 'West': '#34d399',
-        'Himalayas': '#93c5fd', 'Northeast': '#f9a8d4', 'Islands': '#fbbf24',
+        South:'#a78bfa', North:'#60a5fa', West:'#34d399',
+        Himalayas:'#7dd3fc', Northeast:'#f9a8d4', Islands:'#fbbf24',
     };
+
+    const catConfig = [
+        { key:'acc',   icon:'🏨', label:'Accommodation', unit:'per night', color:'var(--cat-acc)'   },
+        { key:'food',  icon:'🍽️', label:'Food',          unit:'per day',   color:'var(--cat-food)'  },
+        { key:'trans', icon:'🚗', label:'Transport',      unit:'per day',   color:'var(--cat-trans)' },
+        { key:'acts',  icon:'🎭', label:'Activities',     unit:'per day',   color:'var(--cat-acts)'  },
+    ];
+
+    // Budget state per destination
+    const budgetState = {};
+    destinations.forEach(d => { budgetState[d.name] = { tier: 'm', days: 5, open: false }; });
 
     const desktopControls = document.getElementById('controls-desktop');
     const mobileControls  = document.getElementById('controls-mobile');
@@ -691,12 +949,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const backdrop        = document.getElementById('backdrop');
     const mobileSheet     = document.getElementById('mobile-sheet');
     const sheetClose      = document.getElementById('sheet-close');
-    const sheetHandle     = document.getElementById('sheet-handle');
-    const fabBadge        = document.getElementById('fab-badge');
 
     let showN = 10;
 
-    // ── Build slider HTML ──
+    // ── Build sliders ──
     function buildSliders(container) {
         for (const key in parameters) {
             const group = document.createElement('div');
@@ -706,19 +962,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="slider-name">${parameters[key]}</span>
                     <span class="slider-val" id="${key}-val-${container.id}">5</span>
                 </div>
-                <input type="range" id="${key}-slider-${container.id}" data-param="${key}" min="0" max="10" value="5">
-            `;
+                <input type="range" id="${key}-slider-${container.id}" data-param="${key}" min="0" max="10" value="5">`;
             container.appendChild(group);
 
             if (key === 'heritage') {
                 const sub = document.createElement('div');
                 sub.className = 'temp-sub';
-                sub.style.cssText = 'background:rgba(192,132,252,0.05);border-color:rgba(192,132,252,0.14)';
-                sub.innerHTML = `<div class="sub-hint" style="color:var(--heritage-color);opacity:0.85">Includes UNESCO sites, ancient temples, forts, colonial history & pilgrimage sites.</div>`;
+                sub.style.cssText = 'background:rgba(176,124,248,0.05);border-color:rgba(176,124,248,0.13)';
+                sub.innerHTML = `<div class="sub-hint" style="color:var(--heritage-color);opacity:0.85">Includes UNESCO sites, ancient temples, forts, royal palaces, colonial history & pilgrimage sites.</div>`;
                 group.appendChild(sub);
-                const div = document.createElement('div');
-                div.className = 'divider';
-                container.appendChild(div);
+                container.appendChild(Object.assign(document.createElement('div'), { className: 'divider' }));
             }
 
             if (key === 'climate') {
@@ -726,12 +979,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 tempSub.className = 'temp-sub';
                 tempSub.innerHTML = `
                     <div class="slider-row">
-                        <span class="slider-name">&#127777;&#65039; Ideal Temperature</span>
+                        <span class="slider-name">🌡️ Ideal Temperature</span>
                         <span class="slider-val" id="pref-temp-val-${container.id}">22°C</span>
                     </div>
                     <input type="range" id="pref-temp-${container.id}" min="5" max="40" value="22" step="1">
-                    <div class="sub-hint">Destinations whose avg temp matches your ideal score higher on Climate.</div>
-                `;
+                    <div class="sub-hint">Destinations whose avg temp matches your ideal score higher on Climate.</div>`;
                 group.appendChild(tempSub);
             }
         }
@@ -740,18 +992,18 @@ document.addEventListener('DOMContentLoaded', () => {
     buildSliders(desktopControls);
     buildSliders(mobileControls);
 
-    // ── Sync sliders between desktop and mobile ──
-    function syncFrom(sourceId, targetId) {
-        document.querySelectorAll(`#${sourceId} input[data-param]`).forEach(src => {
-            const tgt = document.querySelector(`#${targetId} input[data-param="${src.dataset.param}"]`);
+    // ── Sync sliders ──
+    function syncFrom(srcId, tgtId) {
+        document.querySelectorAll(`#${srcId} input[data-param]`).forEach(src => {
+            const tgt = document.querySelector(`#${tgtId} input[data-param="${src.dataset.param}"]`);
             if (tgt) tgt.value = src.value;
         });
-        const srcTemp = document.getElementById(`pref-temp-${sourceId}`);
-        const tgtTemp = document.getElementById(`pref-temp-${targetId}`);
-        if (srcTemp && tgtTemp) tgtTemp.value = srcTemp.value;
+        const st = document.getElementById(`pref-temp-${srcId}`);
+        const tt = document.getElementById(`pref-temp-${tgtId}`);
+        if (st && tt) tt.value = st.value;
     }
 
-    // ── Pill buttons ──
+    // ── Pills ──
     pillsEl.querySelectorAll('.pill').forEach(btn => {
         btn.addEventListener('click', () => {
             pillsEl.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
@@ -761,52 +1013,155 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ── Bottom sheet controls ──
-    function openSheet() {
-        syncFrom(desktopControls.id, mobileControls.id);
-        backdrop.classList.add('open');
-        mobileSheet.classList.add('open');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeSheet() {
-        syncFrom(mobileControls.id, desktopControls.id);
-        backdrop.classList.remove('open');
-        mobileSheet.classList.remove('open');
-        document.body.style.overflow = '';
-        run(desktopControls.id);
-    }
+    // ── Mobile sheet ──
+    const openSheet  = () => { syncFrom(desktopControls.id, mobileControls.id); backdrop.classList.add('open'); mobileSheet.classList.add('open'); document.body.style.overflow = 'hidden'; };
+    const closeSheet = () => { syncFrom(mobileControls.id, desktopControls.id); backdrop.classList.remove('open'); mobileSheet.classList.remove('open'); document.body.style.overflow = ''; run(desktopControls.id); };
 
     fab.addEventListener('click', openSheet);
     backdrop.addEventListener('click', closeSheet);
     sheetClose.addEventListener('click', closeSheet);
-    sheetHandle.addEventListener('click', closeSheet);
+    document.getElementById('sheet-handle').addEventListener('click', closeSheet);
 
-    // ── Swipe down to close sheet ──
-    let touchStartY = 0;
-    mobileSheet.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
-    mobileSheet.addEventListener('touchend', e => {
-        const delta = e.changedTouches[0].clientY - touchStartY;
-        if (delta > 60) closeSheet();
-    }, { passive: true });
+    let tsY = 0;
+    mobileSheet.addEventListener('touchstart', e => { tsY = e.touches[0].clientY; }, { passive: true });
+    mobileSheet.addEventListener('touchend',   e => { if (e.changedTouches[0].clientY - tsY > 55) closeSheet(); }, { passive: true });
 
-    // ── Score calculation ──
-    function tempScore(destAvg, preferred) {
-        return Math.max(0, 10 - Math.abs(destAvg - preferred) * 0.75);
+    // ── Score helpers ──
+    function tempScore(avg, pref) { return Math.max(0, 10 - Math.abs(avg - pref) * 0.75); }
+
+    // ── Budget helpers ──
+    function calcBudget(dest, tier, days) {
+        const data = dest.budget[tier]; // [acc, food, trans, acts]
+        const total = data[0] + data[1] + data[2] + data[3];
+        return { perDay: total, grand: total * days, cats: data };
     }
 
-    function run(sourceId) {
-        const W = {};
-        document.querySelectorAll(`#${sourceId} input[data-param]`).forEach(s => {
-            W[s.dataset.param] = +s.value;
-            const valEl = document.getElementById(`${s.dataset.param}-val-${sourceId}`);
-            if (valEl) valEl.textContent = s.value;
-        });
+    function fmt(n) { return '₹' + n.toLocaleString('en-IN'); }
+    function fmtUSD(inr) { return '$' + Math.round(inr / USD_RATE).toLocaleString(); }
 
-        const prefTempEl = document.getElementById(`pref-temp-${sourceId}`);
-        const preferred  = prefTempEl ? +prefTempEl.value : 22;
-        const prefValEl  = document.getElementById(`pref-temp-val-${sourceId}`);
-        if (prefValEl) prefValEl.textContent = preferred + '°C';
+    // ── SVG Ring ──
+    function scoreRing(score, color, size = 64) {
+        const r = 15.9155; // circumference ≈ 100
+        return `<svg class="score-ring" viewBox="0 0 36 36" width="${size}" height="${size}">
+            <circle class="ring-track" cx="18" cy="18" r="${r}"/>
+            <circle class="ring-fill" cx="18" cy="18" r="${r}" stroke="${color}"
+                stroke-dasharray="${score} ${100 - score}"/>
+            <text class="ring-text" x="18" y="19" fill="${color}">${score}</text>
+        </svg>`;
+    }
+
+    // ── Budget panel HTML ──
+    function buildBudgetPanel(dest) {
+        const state = budgetState[dest.name];
+        const { tier, days } = state;
+        const calc = calcBudget(dest, tier, days);
+        const maxCat = Math.max(...calc.cats);
+
+        const tierBtns = ['b','m','l'].map((t, i) => {
+            const labels = ['Budget','Mid-Range','Luxury'];
+            const emojis = ['🎒','🏨','👑'];
+            const active = tier === t ? `active-${t}` : '';
+            return `<button class="tier-btn ${active}" onclick="setTier('${dest.name}','${t}')">${emojis[i]} ${labels[i]}</button>`;
+        }).join('');
+
+        const catRows = catConfig.map((cat, idx) => {
+            const perDay = calc.cats[idx];
+            const total  = perDay * (cat.key === 'acc' ? days : days);
+            const pct    = maxCat > 0 ? (perDay / maxCat) * 100 : 0;
+            return `<div class="cat-row">
+                <div class="cat-header">
+                    <div class="cat-left">
+                        <span class="cat-icon">${cat.icon}</span>
+                        <span class="cat-name">${cat.label}</span>
+                        <span class="cat-per">${fmt(perDay)}/${cat.unit}</span>
+                    </div>
+                    <span class="cat-total">${fmt(total)}</span>
+                </div>
+                <div class="cat-bar-bg">
+                    <div class="cat-bar-fill" style="width:${pct}%;background:${cat.color}"></div>
+                </div>
+            </div>`;
+        }).join('');
+
+        return `<div class="budget-inner" id="bi-${dest.name.replace(/[^a-z0-9]/gi,'_')}">
+            <div class="budget-tiers">${tierBtns}</div>
+            <div class="days-row">
+                <span class="days-label">📅 How many days?</span>
+                <div class="days-ctrl">
+                    <button class="days-btn" onclick="addDays('${dest.name}',-1)">−</button>
+                    <div class="days-num" id="dn-${dest.name.replace(/[^a-z0-9]/gi,'_')}">${days}</div>
+                    <button class="days-btn" onclick="addDays('${dest.name}',+1)">+</button>
+                </div>
+            </div>
+            <div class="breakdown">${catRows}</div>
+            <div class="budget-total">
+                <div class="total-left">
+                    <div class="total-label">Total Estimated Budget</div>
+                    <div class="total-inr" id="ti-${dest.name.replace(/[^a-z0-9]/gi,'_')}">${fmt(calc.grand)}</div>
+                    <div class="total-usd">≈ ${fmtUSD(calc.grand)} USD &nbsp;·&nbsp; ${days} days</div>
+                </div>
+                <div class="total-right">
+                    <div class="per-day-lbl">Per day</div>
+                    <div class="per-day-val">${fmt(calc.perDay)}</div>
+                </div>
+            </div>
+            <div class="smart-tip">
+                <span class="tip-icon">💡</span>
+                <div>
+                    <div class="tip-text">${dest.budget.tip}</div>
+                    <div class="act-note">🎭 ${dest.budget.actNote}</div>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    // ── Exposed global functions for budget controls ──
+    window.setTier = function(name, tier) {
+        budgetState[name].tier = tier;
+        refreshBudgetPanel(name);
+    };
+
+    window.addDays = function(name, delta) {
+        budgetState[name].days = Math.max(1, Math.min(30, budgetState[name].days + delta));
+        refreshBudgetPanel(name);
+    };
+
+    function refreshBudgetPanel(name) {
+        const dest = destinations.find(d => d.name === name);
+        if (!dest) return;
+        const id = name.replace(/[^a-z0-9]/gi, '_');
+        const panel = document.getElementById(`bi-${id}`);
+        if (!panel) return;
+        panel.parentElement.innerHTML = buildBudgetPanel(dest);
+    }
+
+    // ── Toggle budget panel ──
+    window.toggleBudget = function(name) {
+        const id = name.replace(/[^a-z0-9]/gi, '_');
+        const panel   = document.getElementById(`panel-${id}`);
+        const btn     = document.getElementById(`bbtn-${id}`);
+        if (!panel) return;
+        const isOpen = panel.classList.toggle('open');
+        budgetState[name].open = isOpen;
+        if (btn) btn.classList.toggle('open', isOpen);
+        if (isOpen && !panel.innerHTML.trim()) {
+            panel.innerHTML = buildBudgetPanel(destinations.find(d => d.name === name));
+        }
+        btn.textContent = isOpen ? '✕ Close' : '₹ Budget';
+    };
+
+    // ── Scoring ──
+    function run(srcId) {
+        const W = {};
+        document.querySelectorAll(`#${srcId} input[data-param]`).forEach(s => {
+            W[s.dataset.param] = +s.value;
+            const el = document.getElementById(`${s.dataset.param}-val-${srcId}`);
+            if (el) el.textContent = s.value;
+        });
+        const prefEl = document.getElementById(`pref-temp-${srcId}`);
+        const pref   = prefEl ? +prefEl.value : 22;
+        const pve    = document.getElementById(`pref-temp-val-${srcId}`);
+        if (pve) pve.textContent = pref + '°C';
 
         let maxScore = Object.values(W).reduce((a, w) => a + 10 * w, 0);
         if (maxScore === 0) maxScore = 1;
@@ -815,70 +1170,75 @@ document.addEventListener('DOMContentLoaded', () => {
             let total = 0;
             for (const k in d.scores) {
                 let s = d.scores[k];
-                if (k === 'climate') s = (s + tempScore(d.avgTemp, preferred)) / 2;
+                if (k === 'climate') s = (s + tempScore(d.avgTemp, pref)) / 2;
                 total += s * (W[k] || 0);
             }
-            return { ...d, finalScore: Math.round((total / maxScore) * 100), preferred };
+            return { ...d, finalScore: Math.round((total / maxScore) * 100), pref };
         }).sort((a, b) => b.finalScore - a.finalScore);
 
         render(ranked);
     }
 
+    // ── Render ──
     function render(ranked) {
         const visible = ranked.slice(0, showN);
         resultsEl.innerHTML = '';
 
         visible.forEach((d, i) => {
-            const card       = document.createElement('div');
             const rankClass  = i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : '';
             const badgeClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
             const ordinal    = ['1st','2nd','3rd'][i] ?? `${i + 1}`;
             const suffix     = ['st','nd','rd'][i] ?? '';
 
-            const diff       = Math.abs(d.avgTemp - d.preferred);
+            const ringColor  = i === 0 ? 'var(--gold)' : i === 1 ? 'var(--silver)' : i === 2 ? 'var(--bronze)' : 'var(--accent)';
+            const diff       = Math.abs(d.avgTemp - d.pref);
             const matchLabel = diff <= 2 ? 'Perfect' : diff <= 5 ? 'Near ideal' : diff <= 9 ? 'Close' : 'Far off';
             const matchClass = diff <= 5 ? 'temp-match' : 'temp-tag';
-            const regionColor = regionColors[d.region] ?? '#a0a0a0';
+            const rc         = regionColors[d.region] ?? '#a0a0a0';
+            const safeId     = d.name.replace(/[^a-z0-9]/gi, '_');
 
             const bars = Object.keys(d.scores).map(k => {
-                const isClimate = k === 'climate';
-                const dispScore = isClimate
-                    ? (d.scores[k] + tempScore(d.avgTemp, d.preferred)) / 2
-                    : d.scores[k];
-                const pct = (dispScore / 10) * 100;
-                const bc  = barClass[k] ? ` ${barClass[k]}` : '';
-                const lbl = k === 'heritage' ? 'Heritage' : k === 'connectivity' ? 'Connect.' : parameters[k].split(' ')[0];
-                return `<div class="mini-bar-wrap" title="${parameters[k]}: ${dispScore.toFixed(1)}/10">
-                    <div class="mini-bar-bg"><div class="mini-bar-fill${bc}" style="width:${pct}%"></div></div>
+                const isCl = k === 'climate', isHe = k === 'heritage';
+                const ds   = isCl ? (d.scores[k] + tempScore(d.avgTemp, d.pref)) / 2 : d.scores[k];
+                const pct  = (ds / 10) * 100;
+                const bc   = isCl ? 'temp-bar' : isHe ? 'heritage-bar' : '';
+                const lbl  = k === 'heritage' ? 'Heritage' : k === 'connectivity' ? 'Connect.' : parameters[k].split(' ')[0];
+                return `<div class="mini-bar-wrap" title="${parameters[k]}: ${ds.toFixed(1)}/10">
+                    <div class="mini-bar-bg"><div class="mini-bar-fill ${bc}" style="width:${pct}%"></div></div>
                     <div class="mini-bar-label">${lbl}</div>
                 </div>`;
             }).join('');
 
-            card.className = `dest-card ${rankClass}`;
-            card.innerHTML = `
-                <div class="rank ${badgeClass}">
-                    ${suffix ? `<span>${ordinal.replace(suffix,'')}</span><small>${suffix}</small>`
-                             : `<span style="font-size:0.82em">${ordinal}</span>`}
-                </div>
-                <div class="card-body">
-                    <div class="dest-name">${d.name}</div>
-                    <div class="tags">
-                        <span class="tag" style="background:${regionColor}18;color:${regionColor}">${d.region}</span>
-                        <span class="tag temp-tag">&#127777; ${d.avgTemp}°C</span>
-                        <span class="tag ${matchClass}">${matchLabel}</span>
-                        ${d.unesco ? `<span class="tag unesco-tag">&#127963; UNESCO</span>` : ''}
+            const el = document.createElement('div');
+            el.className = `dest-card ${rankClass}`;
+            el.innerHTML = `
+                <div class="card-main" onclick="toggleBudget('${d.name}')">
+                    <div class="rank ${badgeClass}">
+                        ${suffix ? `<span>${ordinal.replace(suffix,'')}</span><small>${suffix}</small>`
+                                 : `<span style="font-size:0.82em">${ordinal}</span>`}
                     </div>
-                    <div class="mini-bar-row">${bars}</div>
+                    <div class="card-body">
+                        <div class="dest-name">${d.name}</div>
+                        <div class="tags">
+                            <span class="tag" style="background:${rc}18;color:${rc}">${d.region}</span>
+                            <span class="tag temp-tag">🌡️ ${d.avgTemp}°C</span>
+                            <span class="tag ${matchClass}">${matchLabel}</span>
+                            ${d.unesco ? `<span class="tag unesco-tag">🏛️ UNESCO</span>` : ''}
+                        </div>
+                        <div class="mini-bar-row">${bars}</div>
+                    </div>
+                    <div class="score-col">
+                        ${scoreRing(d.finalScore, ringColor, 64)}
+                        <button class="budget-btn" id="bbtn-${safeId}" onclick="event.stopPropagation();toggleBudget('${d.name}')">₹ Budget</button>
+                    </div>
                 </div>
-                <div class="score-wrap">
-                    <div class="score-num">${d.finalScore}</div>
-                    <div class="score-lbl">score</div>
+                <div class="budget-panel ${budgetState[d.name].open ? 'open' : ''}" id="panel-${safeId}">
+                    ${budgetState[d.name].open ? buildBudgetPanel(d) : ''}
                 </div>`;
-            resultsEl.appendChild(card);
+            resultsEl.appendChild(el);
         });
     }
 
-    // ── Listen on both control panels ──
     desktopControls.addEventListener('input', () => run(desktopControls.id));
     mobileControls.addEventListener('input',  () => run(mobileControls.id));
 
