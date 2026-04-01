@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic India Trip Planner</title>
+    <style>
+        /* --- General Styles --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #f8f9fa;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        /* --- Controls Section --- */
+        .controls {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slider-group label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .slider-group span {
+            font-weight: 400;
+            color: var(--primary-color);
+            background: #e7f3ff;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #ddd;
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            border: none;
+            transition: background 0.2s;
+        }
+
+        /* --- Results Section --- */
+        #results {
+            display: grid;
+            gap: 20px;
+        }
+
+        .destination-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .destination-info {
+            flex-grow: 1;
+        }
+
+        .destination-info h3 {
+            margin: 0 0 10px 0;
+            color: #222;
+        }
+
+        .score-breakdown {
+            font-size: 0.85em;
+            color: #777;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .score-badge {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 5px;
+        }
+        
+        .score-badge strong {
+            color: #555;
+        }
+
+        .final-score {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-left: 20px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.4);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Dynamic India Trip Planner</h1>
+            <p>Adjust the sliders below to rank destinations based on what's most important to you.</p>
+        </header>
+
+        <section class="controls" id="controls">
+            <!-- Sliders will be dynamically inserted here by JavaScript -->
+        </section>
+
+        <section id="results">
+            <!-- Destination cards will be dynamically inserted here -->
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- 1. DATA ---
+            const destinations = [
+                { 
+                    name: 'Munnar, Kerala', 
+                    scores: { cleanliness: 9, sites: 9, safety: 10, price: 8, connectivity: 6, food: 8, climate: 10 } 
+                },
+                { 
+                    name: 'Gangtok, Sikkim', 
+                    scores: { cleanliness: 10, sites: 9, safety: 10, price: 8, connectivity: 4, food: 7, climate: 10 } 
+                },
+                { 
+                    name: 'South Goa', 
+                    scores: { cleanliness: 8, sites: 8, safety: 9, price: 7, connectivity: 9, food: 10, climate: 7 } 
+                },
+                { 
+                    name: 'Fort Kochi, Kerala', 
+                    scores: { cleanliness: 8, sites: 8, safety: 9, price: 8, connectivity: 9, food: 9, climate: 7 } 
+                },
+                { 
+                    name: 'Udaipur, Rajasthan', 
+                    scores: { cleanliness: 7, sites: 10, safety: 8, price: 7, connectivity: 8, food: 10, climate: 6 } 
+                },
+                { 
+                    name: 'Alleppey, Kerala', 
+                    scores: { cleanliness: 8, sites: 9, safety: 9, price: 6, connectivity: 7, food: 9, climate: 7 } 
+                },
+                { 
+                    name: 'Jaipur, Rajasthan', 
+                    scores: { cleanliness: 6, sites: 9, safety: 7, price: 8, connectivity: 9, food: 9, climate: 6 } 
+                },
+                { 
+                    name: 'New Delhi', 
+                    scores: { cleanliness: 5, sites: 9, safety: 6, price: 8, connectivity: 10, food: 10, climate: 5 } 
+                },
+                { 
+                    name: 'Agra, Uttar Pradesh', 
+                    scores: { cleanliness: 4, sites: 10, safety: 6, price: 8, connectivity: 10, food: 7, climate: 5 } 
+                }
+            ];
+
+            const parameters = {
+                cleanliness: 'Cleanliness & Hygiene',
+                sites: 'Tourist Sites & Beauty',
+                safety: 'Safety for Tourists',
+                price: 'Affordability',
+                connectivity: 'Travel & Connectivity',
+                food: 'Food & Stay Quality',
+                climate: 'Pleasant Climate'
+            };
+
+            // --- 2. SETUP & INITIALIZATION ---
+            const controlsContainer = document.getElementById('controls');
+            const resultsContainer = document.getElementById('results');
+
+            for (const key in parameters) {
+                const sliderHTML = `
+                    <div class="slider-group">
+                        <label for="${key}-slider">${parameters[key]} <span id="${key}-value">5</span></label>
+                        <input type="range" id="${key}-slider" data-parameter="${key}" min="0" max="10" value="5">
+                    </div>
+                `;
+                controlsContainer.innerHTML += sliderHTML;
+            }
+
+            // --- 3. CORE LOGIC ---
+
+            function calculateAndRender() {
+                const weights = {};
+                document.querySelectorAll('.controls input[type="range"]').forEach(slider => {
+                    const param = slider.dataset.parameter;
+                    weights[param] = parseInt(slider.value, 10);
+                    document.getElementById(`${param}-value`).textContent = slider.value;
+                });
+
+                let maxPossibleScore = 0;
+                for (const param in weights) {
+                    maxPossibleScore += 10 * weights[param];
+                }
+                if (maxPossibleScore === 0) maxPossibleScore = 1;
+
+                const rankedDestinations = destinations.map(dest => {
+                    let totalScore = 0;
+                    for (const param in dest.scores) {
+                        totalScore += dest.scores[param] * (weights[param] || 0);
+                    }
+                    const finalPercentage = Math.round((totalScore / maxPossibleScore) * 100);
+                    return { ...dest, finalScore: finalPercentage };
+                });
+
+                rankedDestinations.sort((a, b) => b.finalScore - a.finalScore);
+
+                renderResults(rankedDestinations);
+            }
+
+            function renderResults(rankedDestinations) {
+                resultsContainer.innerHTML = '';
+
+                rankedDestinations.forEach(dest => {
+                    const card = document.createElement('div');
+                    card.className = 'destination-card';
+
+                    const breakdownHTML = Object.keys(dest.scores).map(key => 
+                        `<div class="score-badge"><strong>${parameters[key].split(' ')[0]}:</strong> ${dest.scores[key]}/10</div>`
+                    ).join('');
+
+                    card.innerHTML = `
+                        <div class="destination-info">
+                            <h3>${dest.name}</h3>
+                            <div class="score-breakdown">${breakdownHTML}</div>
+                        </div>
+                        <div class="final-score">${dest.finalScore}</div>
+                    `;
+                    resultsContainer.appendChild(card);
+                });
+            }
+
+            // --- 4. EVENT LISTENERS ---
+            controlsContainer.addEventListener('input', (event) => {
+                if (event.target.type === 'range') {
+                    calculateAndRender();
+                }
+            });
+
+            // --- 5. INITIAL RENDER ---
+            calculateAndRender();
+
+        });
+    </script>
+</body>
+</html>
