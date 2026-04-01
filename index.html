@@ -22,6 +22,8 @@
             --temp-color: #ff7eb3;
             --temp-dim: rgba(255,126,179,0.12);
             --green: #4ecdc4;
+            --heritage-color: #c084fc;
+            --heritage-dim: rgba(192,132,252,0.12);
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -75,23 +77,30 @@
         header p {
             margin-top: 10px;
             color: var(--muted);
-            font-size: 0.97em;
+            font-size: 0.95em;
             position: relative;
         }
 
         /* Layout */
         .page {
-            max-width: 1160px;
+            max-width: 1180px;
             margin: 0 auto;
             padding: 32px 20px 60px;
             display: grid;
-            grid-template-columns: 320px 1fr;
+            grid-template-columns: 330px 1fr;
             gap: 26px;
             align-items: start;
         }
 
-        /* Sidebar */
-        .sidebar { position: sticky; top: 24px; }
+        /* Sidebar — scrolls internally if taller than viewport */
+        .sidebar {
+            position: sticky;
+            top: 16px;
+            max-height: calc(100vh - 32px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
         .sec-label {
             font-size: 0.63em;
@@ -101,19 +110,28 @@
             color: var(--muted);
             margin-bottom: 10px;
             padding-left: 2px;
+            flex-shrink: 0;
         }
 
         .controls-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 18px;
-            padding: 20px 18px;
+            padding: 18px 16px;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 16px;
+            overflow-y: auto;
+            flex: 1;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.08) transparent;
         }
 
-        .slider-group { display: flex; flex-direction: column; gap: 8px; }
+        .controls-card::-webkit-scrollbar { width: 4px; }
+        .controls-card::-webkit-scrollbar-track { background: transparent; }
+        .controls-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+        .slider-group { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
 
         .slider-row {
             display: flex;
@@ -168,10 +186,10 @@
         /* Temperature sub */
         .temp-sub {
             margin-top: 4px;
-            padding: 13px 14px;
+            padding: 12px 13px;
             background: rgba(255,126,179,0.05);
             border: 1px solid rgba(255,126,179,0.14);
-            border-radius: 11px;
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -195,53 +213,48 @@
 
         .temp-sub input[type="range"]::-moz-range-thumb { background: var(--temp-color); }
 
-        .temp-hint { font-size: 0.7em; color: var(--muted); line-height: 1.4; }
+        .sub-hint { font-size: 0.69em; color: var(--muted); line-height: 1.4; }
 
-        .divider { height: 1px; background: var(--border); }
+        .divider { height: 1px; background: var(--border); flex-shrink: 0; }
 
-        /* Results header row */
+        /* Results area */
         .results-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .results-top .sec-label { margin-bottom: 0; }
 
-        .filter-row {
+        /* Pill buttons replacing the broken <select> */
+        .show-pills {
             display: flex;
-            align-items: center;
-            gap: 8px;
+            gap: 5px;
+            flex-wrap: wrap;
         }
 
-        .filter-label {
+        .pill {
             font-size: 0.72em;
-            color: var(--muted);
-            white-space: nowrap;
-        }
-
-        .show-select {
-            background: var(--surface);
+            font-weight: 600;
+            padding: 4px 11px;
+            border-radius: 20px;
             border: 1px solid var(--border);
-            color: var(--text);
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.78em;
-            padding: 4px 10px;
-            border-radius: 8px;
-            outline: none;
+            background: transparent;
+            color: var(--muted);
             cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
+            font-family: 'DM Sans', sans-serif;
         }
 
-        .show-select:hover { border-color: rgba(232,164,74,0.3); }
+        .pill:hover { border-color: rgba(232,164,74,0.3); color: var(--text); }
 
-        .dest-count {
-            font-size: 0.7em;
-            color: var(--muted);
-            white-space: nowrap;
+        .pill.active {
+            background: var(--accent-dim);
+            border-color: rgba(232,164,74,0.4);
+            color: var(--accent);
         }
 
         /* Cards */
@@ -267,14 +280,13 @@
         }
 
         .dest-card.r1 {
-            border-color: rgba(255,209,102,0.28);
-            background: linear-gradient(135deg, var(--surface) 0%, rgba(255,209,102,0.04) 100%);
+            border-color: rgba(255,209,102,0.3);
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(255,209,102,0.05) 100%);
         }
 
         .dest-card.r2 { border-color: rgba(176,184,200,0.2); }
         .dest-card.r3 { border-color: rgba(205,138,90,0.2); }
 
-        /* Rank badge */
         .rank {
             width: 44px; height: 44px;
             border-radius: 12px;
@@ -287,7 +299,7 @@
             line-height: 1;
         }
 
-        .rank small { font-size: 0.48em; font-weight: 400; opacity: 0.7; letter-spacing: 0.5px; }
+        .rank small { font-size: 0.46em; font-weight: 400; opacity: 0.7; }
         .rank.gold   { background: rgba(255,209,102,0.1); color: var(--gold); }
         .rank.silver { background: rgba(176,184,200,0.1); color: var(--silver); }
         .rank.bronze { background: rgba(205,138,90,0.1);  color: var(--bronze); }
@@ -297,7 +309,7 @@
         .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 7px; }
 
         .tag {
-            font-size: 0.68em;
+            font-size: 0.67em;
             padding: 2px 7px;
             border-radius: 20px;
             background: rgba(255,255,255,0.05);
@@ -305,9 +317,10 @@
             white-space: nowrap;
         }
 
-        .tag.temp-tag   { background: var(--temp-dim); color: var(--temp-color); }
-        .tag.temp-match { background: rgba(78,205,196,0.1); color: var(--green); }
-        .tag.region-tag { background: rgba(130,100,255,0.1); color: #a78bfa; }
+        .tag.temp-tag     { background: var(--temp-dim); color: var(--temp-color); }
+        .tag.temp-match   { background: rgba(78,205,196,0.1); color: var(--green); }
+        .tag.heritage-tag { background: var(--heritage-dim); color: var(--heritage-color); }
+        .tag.unesco-tag   { background: rgba(192,132,252,0.18); color: #d8b4fe; font-weight: 600; }
 
         /* Mini bars */
         .mini-bar-row { display: flex; gap: 3px; }
@@ -330,11 +343,11 @@
             transition: width 0.3s ease;
         }
 
-        .mini-bar-fill.temp-bar { background: var(--temp-color); }
+        .mini-bar-fill.temp-bar      { background: var(--temp-color); }
+        .mini-bar-fill.heritage-bar  { background: var(--heritage-color); }
 
-        .mini-bar-label { font-size: 0.58em; color: var(--muted); white-space: nowrap; }
+        .mini-bar-label { font-size: 0.56em; color: var(--muted); white-space: nowrap; }
 
-        /* Score */
         .score-wrap { text-align: right; flex-shrink: 0; }
 
         .score-num {
@@ -344,14 +357,14 @@
         }
 
         .score-lbl {
-            font-size: 0.58em; color: var(--muted);
+            font-size: 0.56em; color: var(--muted);
             text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;
         }
 
-        /* Responsive */
         @media (max-width: 780px) {
             .page { grid-template-columns: 1fr; }
-            .sidebar { position: static; }
+            .sidebar { position: static; max-height: none; }
+            .controls-card { max-height: 55vh; }
         }
     </style>
 </head>
@@ -373,16 +386,12 @@
     <main>
         <div class="results-top">
             <div class="sec-label">Ranked Destinations</div>
-            <div class="filter-row">
-                <span class="filter-label">Show</span>
-                <select class="show-select" id="show-select">
-                    <option value="5">Top 5</option>
-                    <option value="10" selected>Top 10</option>
-                    <option value="15">Top 15</option>
-                    <option value="20">Top 20</option>
-                    <option value="37">All 37</option>
-                </select>
-                <span class="dest-count" id="dest-count"></span>
+            <div class="show-pills" id="show-pills">
+                <button class="pill" data-n="5">Top 5</button>
+                <button class="pill active" data-n="10">Top 10</button>
+                <button class="pill" data-n="15">Top 15</button>
+                <button class="pill" data-n="20">Top 20</button>
+                <button class="pill" data-n="37">All 37</button>
             </div>
         </div>
         <div id="results"></div>
@@ -393,66 +402,73 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
+    // UNESCO sites present: true = confirmed UNESCO World Heritage Site nearby
     const destinations = [
         // South India
-        { name: 'Munnar, Kerala',           region: 'South',      avgTemp: 18, scores: { cleanliness: 9,  sites: 9,  safety: 10, price: 8, connectivity: 6,  food: 8,  climate: 9 } },
-        { name: 'Alleppey, Kerala',          region: 'South',      avgTemp: 29, scores: { cleanliness: 8,  sites: 9,  safety: 9,  price: 6, connectivity: 7,  food: 9,  climate: 7 } },
-        { name: 'Fort Kochi, Kerala',        region: 'South',      avgTemp: 28, scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 8, connectivity: 9,  food: 9,  climate: 7 } },
-        { name: 'Varkala, Kerala',           region: 'South',      avgTemp: 28, scores: { cleanliness: 8,  sites: 8,  safety: 8,  price: 7, connectivity: 6,  food: 8,  climate: 7 } },
-        { name: 'Mysuru, Karnataka',         region: 'South',      avgTemp: 25, scores: { cleanliness: 8,  sites: 9,  safety: 9,  price: 8, connectivity: 8,  food: 9,  climate: 8 } },
-        { name: 'Coorg, Karnataka',          region: 'South',      avgTemp: 20, scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 7, connectivity: 6,  food: 8,  climate: 9 } },
-        { name: 'Hampi, Karnataka',          region: 'South',      avgTemp: 28, scores: { cleanliness: 6,  sites: 10, safety: 8,  price: 9, connectivity: 6,  food: 6,  climate: 6 } },
-        { name: 'Pondicherry',               region: 'South',      avgTemp: 28, scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 8, connectivity: 8,  food: 9,  climate: 7 } },
-        { name: 'Ooty, Tamil Nadu',          region: 'South',      avgTemp: 17, scores: { cleanliness: 7,  sites: 7,  safety: 9,  price: 8, connectivity: 6,  food: 7,  climate: 9 } },
-        { name: 'Kodaikanal, Tamil Nadu',    region: 'South',      avgTemp: 16, scores: { cleanliness: 7,  sites: 7,  safety: 9,  price: 8, connectivity: 5,  food: 7,  climate: 9 } },
-        { name: 'Mahabalipuram, Tamil Nadu', region: 'South',      avgTemp: 28, scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 8,  food: 7,  climate: 7 } },
-        { name: 'Hyderabad, Telangana',      region: 'South',      avgTemp: 26, scores: { cleanliness: 6,  sites: 8,  safety: 7,  price: 7, connectivity: 9,  food: 10, climate: 6 } },
+        { name: 'Munnar, Kerala',           region: 'South',      avgTemp: 18, unesco: false, scores: { cleanliness: 9,  sites: 9,  safety: 10, price: 8, connectivity: 6,  food: 8,  climate: 9,  heritage: 5 } },
+        { name: 'Alleppey, Kerala',          region: 'South',      avgTemp: 29, unesco: false, scores: { cleanliness: 8,  sites: 9,  safety: 9,  price: 6, connectivity: 7,  food: 9,  climate: 7,  heritage: 4 } },
+        { name: 'Fort Kochi, Kerala',        region: 'South',      avgTemp: 28, unesco: false, scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 8, connectivity: 9,  food: 9,  climate: 7,  heritage: 7 } },
+        { name: 'Varkala, Kerala',           region: 'South',      avgTemp: 28, unesco: false, scores: { cleanliness: 8,  sites: 8,  safety: 8,  price: 7, connectivity: 6,  food: 8,  climate: 7,  heritage: 4 } },
+        { name: 'Mysuru, Karnataka',         region: 'South',      avgTemp: 25, unesco: false, scores: { cleanliness: 8,  sites: 9,  safety: 9,  price: 8, connectivity: 8,  food: 9,  climate: 8,  heritage: 8 } },
+        { name: 'Coorg, Karnataka',          region: 'South',      avgTemp: 20, unesco: false, scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 7, connectivity: 6,  food: 8,  climate: 9,  heritage: 4 } },
+        { name: 'Hampi, Karnataka',          region: 'South',      avgTemp: 28, unesco: true,  scores: { cleanliness: 6,  sites: 10, safety: 8,  price: 9, connectivity: 6,  food: 6,  climate: 6,  heritage: 10 } },
+        { name: 'Pondicherry',               region: 'South',      avgTemp: 28, unesco: false, scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 8, connectivity: 8,  food: 9,  climate: 7,  heritage: 6 } },
+        { name: 'Ooty, Tamil Nadu',          region: 'South',      avgTemp: 17, unesco: true,  scores: { cleanliness: 7,  sites: 7,  safety: 9,  price: 8, connectivity: 6,  food: 7,  climate: 9,  heritage: 6 } },
+        { name: 'Kodaikanal, Tamil Nadu',    region: 'South',      avgTemp: 16, unesco: false, scores: { cleanliness: 7,  sites: 7,  safety: 9,  price: 8, connectivity: 5,  food: 7,  climate: 9,  heritage: 4 } },
+        { name: 'Mahabalipuram, Tamil Nadu', region: 'South',      avgTemp: 28, unesco: true,  scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 8,  food: 7,  climate: 7,  heritage: 10 } },
+        { name: 'Hyderabad, Telangana',      region: 'South',      avgTemp: 26, unesco: false, scores: { cleanliness: 6,  sites: 8,  safety: 7,  price: 7, connectivity: 9,  food: 10, climate: 6,  heritage: 8 } },
 
         // Goa
-        { name: 'South Goa',                 region: 'West',       avgTemp: 29, scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 7, connectivity: 9,  food: 10, climate: 7 } },
-        { name: 'North Goa',                 region: 'West',       avgTemp: 29, scores: { cleanliness: 7,  sites: 7,  safety: 8,  price: 7, connectivity: 9,  food: 9,  climate: 7 } },
+        { name: 'South Goa',                 region: 'West',       avgTemp: 29, unesco: true,  scores: { cleanliness: 8,  sites: 8,  safety: 9,  price: 7, connectivity: 9,  food: 10, climate: 7,  heritage: 8 } },
+        { name: 'North Goa',                 region: 'West',       avgTemp: 29, unesco: true,  scores: { cleanliness: 7,  sites: 7,  safety: 8,  price: 7, connectivity: 9,  food: 9,  climate: 7,  heritage: 8 } },
 
         // Rajasthan
-        { name: 'Udaipur, Rajasthan',        region: 'North',      avgTemp: 27, scores: { cleanliness: 7,  sites: 10, safety: 8,  price: 7, connectivity: 8,  food: 10, climate: 6 } },
-        { name: 'Jaipur, Rajasthan',         region: 'North',      avgTemp: 26, scores: { cleanliness: 6,  sites: 9,  safety: 7,  price: 8, connectivity: 9,  food: 9,  climate: 6 } },
-        { name: 'Jodhpur, Rajasthan',        region: 'North',      avgTemp: 27, scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 8,  food: 9,  climate: 6 } },
-        { name: 'Jaisalmer, Rajasthan',      region: 'North',      avgTemp: 28, scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 7,  food: 8,  climate: 6 } },
-        { name: 'Pushkar, Rajasthan',        region: 'North',      avgTemp: 25, scores: { cleanliness: 6,  sites: 8,  safety: 8,  price: 8, connectivity: 7,  food: 7,  climate: 6 } },
+        { name: 'Udaipur, Rajasthan',        region: 'North',      avgTemp: 27, unesco: false, scores: { cleanliness: 7,  sites: 10, safety: 8,  price: 7, connectivity: 8,  food: 10, climate: 6,  heritage: 8 } },
+        { name: 'Jaipur, Rajasthan',         region: 'North',      avgTemp: 26, unesco: true,  scores: { cleanliness: 6,  sites: 9,  safety: 7,  price: 8, connectivity: 9,  food: 9,  climate: 6,  heritage: 9 } },
+        { name: 'Jodhpur, Rajasthan',        region: 'North',      avgTemp: 27, unesco: true,  scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 8,  food: 9,  climate: 6,  heritage: 8 } },
+        { name: 'Jaisalmer, Rajasthan',      region: 'North',      avgTemp: 28, unesco: true,  scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 7,  food: 8,  climate: 6,  heritage: 9 } },
+        { name: 'Pushkar, Rajasthan',        region: 'North',      avgTemp: 25, unesco: false, scores: { cleanliness: 6,  sites: 8,  safety: 8,  price: 8, connectivity: 7,  food: 7,  climate: 6,  heritage: 7 } },
 
         // North India
-        { name: 'New Delhi',                 region: 'North',      avgTemp: 25, scores: { cleanliness: 5,  sites: 9,  safety: 6,  price: 8, connectivity: 10, food: 10, climate: 5 } },
-        { name: 'Agra, Uttar Pradesh',       region: 'North',      avgTemp: 25, scores: { cleanliness: 4,  sites: 10, safety: 6,  price: 8, connectivity: 10, food: 7,  climate: 5 } },
-        { name: 'Varanasi, Uttar Pradesh',   region: 'North',      avgTemp: 24, scores: { cleanliness: 4,  sites: 10, safety: 7,  price: 7, connectivity: 9,  food: 8,  climate: 5 } },
-        { name: 'Amritsar, Punjab',          region: 'North',      avgTemp: 22, scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 9,  food: 9,  climate: 6 } },
-        { name: 'Rishikesh, Uttarakhand',    region: 'North',      avgTemp: 20, scores: { cleanliness: 7,  sites: 8,  safety: 8,  price: 8, connectivity: 8,  food: 7,  climate: 8 } },
+        { name: 'New Delhi',                 region: 'North',      avgTemp: 25, unesco: true,  scores: { cleanliness: 5,  sites: 9,  safety: 6,  price: 8, connectivity: 10, food: 10, climate: 5,  heritage: 10 } },
+        { name: 'Agra, Uttar Pradesh',       region: 'North',      avgTemp: 25, unesco: true,  scores: { cleanliness: 4,  sites: 10, safety: 6,  price: 8, connectivity: 10, food: 7,  climate: 5,  heritage: 10 } },
+        { name: 'Varanasi, Uttar Pradesh',   region: 'North',      avgTemp: 24, unesco: false, scores: { cleanliness: 4,  sites: 10, safety: 7,  price: 7, connectivity: 9,  food: 8,  climate: 5,  heritage: 9 } },
+        { name: 'Amritsar, Punjab',          region: 'North',      avgTemp: 22, unesco: false, scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 9,  food: 9,  climate: 6,  heritage: 9 } },
+        { name: 'Rishikesh, Uttarakhand',    region: 'North',      avgTemp: 20, unesco: false, scores: { cleanliness: 7,  sites: 8,  safety: 8,  price: 8, connectivity: 8,  food: 7,  climate: 8,  heritage: 7 } },
 
         // Himachal & Mountains
-        { name: 'Shimla, Himachal Pradesh',  region: 'Himalayas',  avgTemp: 13, scores: { cleanliness: 7,  sites: 7,  safety: 9,  price: 7, connectivity: 7,  food: 7,  climate: 9 } },
-        { name: 'Manali, Himachal Pradesh',  region: 'Himalayas',  avgTemp: 10, scores: { cleanliness: 7,  sites: 10, safety: 8,  price: 8, connectivity: 5,  food: 7,  climate: 9 } },
-        { name: 'Kasol, Himachal Pradesh',   region: 'Himalayas',  avgTemp: 14, scores: { cleanliness: 7,  sites: 8,  safety: 7,  price: 9, connectivity: 4,  food: 6,  climate: 9 } },
-        { name: 'McLeod Ganj, HP',           region: 'Himalayas',  avgTemp: 16, scores: { cleanliness: 7,  sites: 8,  safety: 9,  price: 8, connectivity: 6,  food: 7,  climate: 9 } },
-        { name: 'Leh-Ladakh',               region: 'Himalayas',  avgTemp: 8,  scores: { cleanliness: 8,  sites: 10, safety: 8,  price: 7, connectivity: 4,  food: 6,  climate: 8 } },
-        { name: 'Spiti Valley, HP',          region: 'Himalayas',  avgTemp: 7,  scores: { cleanliness: 9,  sites: 10, safety: 7,  price: 8, connectivity: 3,  food: 5,  climate: 7 } },
+        { name: 'Shimla, Himachal Pradesh',  region: 'Himalayas',  avgTemp: 13, unesco: true,  scores: { cleanliness: 7,  sites: 7,  safety: 9,  price: 7, connectivity: 7,  food: 7,  climate: 9,  heritage: 7 } },
+        { name: 'Manali, Himachal Pradesh',  region: 'Himalayas',  avgTemp: 10, unesco: false, scores: { cleanliness: 7,  sites: 10, safety: 8,  price: 8, connectivity: 5,  food: 7,  climate: 9,  heritage: 5 } },
+        { name: 'Kasol, Himachal Pradesh',   region: 'Himalayas',  avgTemp: 14, unesco: false, scores: { cleanliness: 7,  sites: 8,  safety: 7,  price: 9, connectivity: 4,  food: 6,  climate: 9,  heritage: 3 } },
+        { name: 'McLeod Ganj, HP',           region: 'Himalayas',  avgTemp: 16, unesco: false, scores: { cleanliness: 7,  sites: 8,  safety: 9,  price: 8, connectivity: 6,  food: 7,  climate: 9,  heritage: 7 } },
+        { name: 'Leh-Ladakh',                region: 'Himalayas',  avgTemp: 8,  unesco: false, scores: { cleanliness: 8,  sites: 10, safety: 8,  price: 7, connectivity: 4,  food: 6,  climate: 8,  heritage: 8 } },
+        { name: 'Spiti Valley, HP',          region: 'Himalayas',  avgTemp: 7,  unesco: false, scores: { cleanliness: 9,  sites: 10, safety: 7,  price: 8, connectivity: 3,  food: 5,  climate: 7,  heritage: 8 } },
 
         // Northeast
-        { name: 'Gangtok, Sikkim',           region: 'Northeast',  avgTemp: 15, scores: { cleanliness: 10, sites: 9,  safety: 10, price: 8, connectivity: 4,  food: 7,  climate: 9 } },
-        { name: 'Darjeeling, West Bengal',   region: 'Northeast',  avgTemp: 14, scores: { cleanliness: 7,  sites: 9,  safety: 9,  price: 8, connectivity: 5,  food: 7,  climate: 9 } },
-        { name: 'Shillong, Meghalaya',       region: 'Northeast',  avgTemp: 18, scores: { cleanliness: 8,  sites: 9,  safety: 8,  price: 8, connectivity: 6,  food: 8,  climate: 8 } },
-        { name: 'Ziro Valley, Arunachal',    region: 'Northeast',  avgTemp: 18, scores: { cleanliness: 9,  sites: 9,  safety: 9,  price: 9, connectivity: 3,  food: 6,  climate: 8 } },
+        { name: 'Gangtok, Sikkim',           region: 'Northeast',  avgTemp: 15, unesco: false, scores: { cleanliness: 10, sites: 9,  safety: 10, price: 8, connectivity: 4,  food: 7,  climate: 9,  heritage: 6 } },
+        { name: 'Darjeeling, West Bengal',   region: 'Northeast',  avgTemp: 14, unesco: true,  scores: { cleanliness: 7,  sites: 9,  safety: 9,  price: 8, connectivity: 5,  food: 7,  climate: 9,  heritage: 7 } },
+        { name: 'Shillong, Meghalaya',       region: 'Northeast',  avgTemp: 18, unesco: false, scores: { cleanliness: 8,  sites: 9,  safety: 8,  price: 8, connectivity: 6,  food: 8,  climate: 8,  heritage: 5 } },
+        { name: 'Ziro Valley, Arunachal',    region: 'Northeast',  avgTemp: 18, unesco: false, scores: { cleanliness: 9,  sites: 9,  safety: 9,  price: 9, connectivity: 3,  food: 6,  climate: 8,  heritage: 7 } },
 
         // Islands & Remote
-        { name: 'Andaman Islands',           region: 'Islands',    avgTemp: 29, scores: { cleanliness: 9,  sites: 10, safety: 9,  price: 5, connectivity: 5,  food: 7,  climate: 8 } },
-        { name: 'Rann of Kutch, Gujarat',    region: 'West',       avgTemp: 27, scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 6,  food: 7,  climate: 6 } },
+        { name: 'Andaman Islands',           region: 'Islands',    avgTemp: 29, unesco: false, scores: { cleanliness: 9,  sites: 10, safety: 9,  price: 5, connectivity: 5,  food: 7,  climate: 8,  heritage: 6 } },
+        { name: 'Rann of Kutch, Gujarat',    region: 'West',       avgTemp: 27, unesco: true,  scores: { cleanliness: 7,  sites: 9,  safety: 8,  price: 8, connectivity: 6,  food: 7,  climate: 6,  heritage: 8 } },
     ];
 
     const parameters = {
         cleanliness:  'Cleanliness',
         sites:        'Tourist Sites',
+        heritage:     'Cultural Heritage',
         safety:       'Safety',
         price:        'Affordability',
         connectivity: 'Connectivity',
         food:         'Food & Stay',
-        climate:      'Climate'
+        climate:      'Climate',
+    };
+
+    const barClass = {
+        climate:  'temp-bar',
+        heritage: 'heritage-bar',
     };
 
     const regionColors = {
@@ -464,10 +480,20 @@ document.addEventListener('DOMContentLoaded', () => {
         'Islands':   '#fbbf24',
     };
 
-    const controls = document.getElementById('controls');
+    const controls  = document.getElementById('controls');
     const resultsEl = document.getElementById('results');
-    const showSelect = document.getElementById('show-select');
-    const destCount = document.getElementById('dest-count');
+    const pillsEl   = document.getElementById('show-pills');
+    let showN = 10;
+
+    // Pill button logic
+    pillsEl.querySelectorAll('.pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+            pillsEl.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            showN = +btn.dataset.n;
+            run();
+        });
+    });
 
     // Build sliders
     for (const key in parameters) {
@@ -482,6 +508,20 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         controls.appendChild(group);
 
+        // Heritage sub-note
+        if (key === 'heritage') {
+            const sub = document.createElement('div');
+            sub.className = 'temp-sub';
+            sub.style.cssText = 'background:rgba(192,132,252,0.05);border-color:rgba(192,132,252,0.14)';
+            sub.innerHTML = `<div class="sub-hint" style="color:var(--heritage-color);opacity:0.8">Includes UNESCO World Heritage Sites, ancient temples, forts, colonial history, and sacred pilgrimage sites.</div>`;
+            group.appendChild(sub);
+
+            const div = document.createElement('div');
+            div.className = 'divider';
+            controls.appendChild(div);
+        }
+
+        // Temperature subsection under Climate
         if (key === 'climate') {
             const tempSub = document.createElement('div');
             tempSub.className = 'temp-sub';
@@ -491,13 +531,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="slider-val" id="pref-temp-val">22°C</span>
                 </div>
                 <input type="range" id="pref-temp" min="5" max="40" value="22" step="1">
-                <div class="temp-hint">Destinations whose avg temp matches your ideal score higher on Climate.</div>
+                <div class="sub-hint">Destinations whose avg temp matches your ideal score higher on Climate.</div>
             `;
             group.appendChild(tempSub);
-
-            const div = document.createElement('div');
-            div.className = 'divider';
-            controls.appendChild(div);
         }
     }
 
@@ -532,17 +568,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function render(ranked) {
-        const showN = +showSelect.value;
         const visible = ranked.slice(0, showN);
-        destCount.textContent = `${showN} of ${destinations.length}`;
-
         resultsEl.innerHTML = '';
 
         visible.forEach((d, i) => {
             const card = document.createElement('div');
-            const rankClass = i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : '';
+            const rankClass  = i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : '';
             const badgeClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
-            const ordinal = ['1st','2nd','3rd'][i] ?? `${i+1}`;
+            const ordinal    = ['1st','2nd','3rd'][i] ?? `${i + 1}`;
+            const suffix     = ['st','nd','rd'][i] ?? '';
 
             const diff = Math.abs(d.avgTemp - d.preferred);
             const matchLabel = diff <= 2 ? 'Perfect match' : diff <= 5 ? 'Near ideal' : diff <= 9 ? 'Close' : 'Far off';
@@ -551,33 +585,36 @@ document.addEventListener('DOMContentLoaded', () => {
             const regionColor = regionColors[d.region] ?? '#a0a0a0';
 
             const bars = Object.keys(d.scores).map(k => {
-                const isClimate = k === 'climate';
-                const dispScore = isClimate
+                const isClimate  = k === 'climate';
+                const dispScore  = isClimate
                     ? (d.scores[k] + tempScore(d.avgTemp, d.preferred)) / 2
                     : d.scores[k];
                 const pct = (dispScore / 10) * 100;
+                const bc  = barClass[k] ? ` ${barClass[k]}` : '';
+                const label = parameters[k] === 'Cultural Heritage' ? 'Heritage' : parameters[k].split(' ')[0];
                 return `
                     <div class="mini-bar-wrap" title="${parameters[k]}: ${dispScore.toFixed(1)}/10">
                         <div class="mini-bar-bg">
-                            <div class="mini-bar-fill${isClimate ? ' temp-bar' : ''}" style="width:${pct}%"></div>
+                            <div class="mini-bar-fill${bc}" style="width:${pct}%"></div>
                         </div>
-                        <div class="mini-bar-label">${parameters[k].split(' ')[0]}</div>
+                        <div class="mini-bar-label">${label}</div>
                     </div>`;
             }).join('');
 
             card.className = `dest-card ${rankClass}`;
             card.innerHTML = `
                 <div class="rank ${badgeClass}">
-                    ${i < 3
-                        ? `<span>${ordinal.replace(/\d+/, m => m)}</span><small>${['st','nd','rd'][i]}</small>`
-                        : `<span style="font-size:0.85em">${ordinal}</span>`}
+                    ${suffix
+                        ? `<span>${ordinal.replace(suffix,'')}</span><small>${suffix}</small>`
+                        : `<span style="font-size:0.82em">${ordinal}</span>`}
                 </div>
                 <div class="card-body">
                     <div class="dest-name">${d.name}</div>
                     <div class="tags">
-                        <span class="tag region-tag" style="background:${regionColor}18;color:${regionColor}">${d.region}</span>
+                        <span class="tag" style="background:${regionColor}18;color:${regionColor}">${d.region}</span>
                         <span class="tag temp-tag">&#127777; ${d.avgTemp}°C avg</span>
                         <span class="tag ${matchClass}">${matchLabel}</span>
+                        ${d.unesco ? `<span class="tag unesco-tag">&#127963; UNESCO</span>` : ''}
                     </div>
                     <div class="mini-bar-row">${bars}</div>
                 </div>
@@ -591,7 +628,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     controls.addEventListener('input', run);
-    showSelect.addEventListener('change', run);
     run();
 });
 </script>
